@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, m } from "@/components/motion";
 import { CloseIcon, InstagramIcon, MailIcon, MenuIcon } from "@/components/ui/icons";
+import { useHydrated } from "@/hooks/use-hydrated";
 
 type NavItem = { label: string; href: string };
 
@@ -33,6 +35,7 @@ export function MobileNav({
   instagramLabel,
 }: MobileNavProps) {
   const [open, setOpen] = useState(false);
+  const hydrated = useHydrated();
 
   useEffect(() => {
     if (!open) return;
@@ -60,67 +63,77 @@ export function MobileNav({
         <MenuIcon className="size-6" />
       </button>
 
-      <AnimatePresence>
-        {open && (
-          <m.div
-            id="mobile-menu"
-            role="dialog"
-            aria-modal="true"
-            aria-label={brand}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-            className="bg-background fixed inset-0 z-50 flex flex-col"
-          >
-            <div className="flex h-16 items-center justify-between px-6">
-              <Image src="/logo.png" alt={brand} width={420} height={101} className="h-6 w-auto" />
-              <button
-                type="button"
-                aria-label={closeLabel}
-                autoFocus
-                onClick={() => setOpen(false)}
-                className={iconButton}
+      {hydrated &&
+        createPortal(
+          <AnimatePresence>
+            {open && (
+              <m.div
+                id="mobile-menu"
+                role="dialog"
+                aria-modal="true"
+                aria-label={brand}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                className="bg-background fixed inset-0 z-50 flex flex-col md:hidden"
               >
-                <CloseIcon className="size-6" />
-              </button>
-            </div>
+                <div className="flex h-16 items-center justify-between px-6">
+                  <Image
+                    src="/logo.png"
+                    alt={brand}
+                    width={420}
+                    height={101}
+                    className="h-6 w-auto"
+                  />
+                  <button
+                    type="button"
+                    aria-label={closeLabel}
+                    autoFocus
+                    onClick={() => setOpen(false)}
+                    className={iconButton}
+                  >
+                    <CloseIcon className="size-6" />
+                  </button>
+                </div>
 
-            <nav aria-label={brand} className="flex flex-col gap-8 px-6 py-10">
-              {items.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="font-serif text-4xl font-light"
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
+                <nav aria-label={brand} className="flex flex-col gap-8 px-6 py-10">
+                  {items.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setOpen(false)}
+                      className="font-serif text-4xl font-light"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </nav>
 
-            <div className="mt-auto flex items-center justify-between border-t px-6 py-6">
-              <a
-                href={contactHref}
-                onClick={() => setOpen(false)}
-                className="label-eyebrow inline-flex items-center gap-2"
-              >
-                <MailIcon className="size-4" />
-                {contactLabel}
-              </a>
-              <a
-                href={instagramUrl}
-                aria-label={instagramLabel}
-                target="_blank"
-                rel="noreferrer"
-                className={iconButton}
-              >
-                <InstagramIcon className="size-5" />
-              </a>
-            </div>
-          </m.div>
+                <div className="mt-auto flex items-center justify-between border-t px-6 py-6">
+                  <a
+                    href={contactHref}
+                    onClick={() => setOpen(false)}
+                    className="label-eyebrow inline-flex items-center gap-2"
+                  >
+                    <MailIcon className="size-4" />
+                    {contactLabel}
+                  </a>
+                  <a
+                    href={instagramUrl}
+                    aria-label={instagramLabel}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={iconButton}
+                  >
+                    <InstagramIcon className="size-5" />
+                  </a>
+                </div>
+              </m.div>
+            )}
+          </AnimatePresence>,
+          document.body,
         )}
-      </AnimatePresence>
     </div>
   );
 }
