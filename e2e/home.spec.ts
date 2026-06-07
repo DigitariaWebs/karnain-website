@@ -20,6 +20,10 @@ test("@cuj CUJ-A: visitor lands, understands the maison, finds a way forward", a
   await expect(page.getByRole("button", { name: "Ouvrir le panier" })).toBeVisible();
   await expect(page.getByRole("link", { name: /whatsapp/i })).toHaveCount(0);
 
+  // Editorial: the Instagram strip links out to the brand’s Instagram.
+  const instagram = page.getByRole("link", { name: "Nous suivre sur Instagram" }).first();
+  await expect(instagram).toHaveAttribute("href", /instagram\.com/);
+
   await shot(page, "home-desktop");
 
   // Responsive: mobile layout + working menu

@@ -3,9 +3,9 @@ import Link from "next/link";
 import { Container } from "@/components/layout/container";
 import { Reveal } from "@/components/motion";
 import { buttonVariants } from "@/components/ui/button";
-import { MailIcon, PhoneIcon } from "@/components/ui/icons";
+import { InstagramIcon, MailIcon, PhoneIcon } from "@/components/ui/icons";
 import { getDictionary } from "@/core/i18n";
-import { emailLink, telLink } from "@/core/site";
+import { emailLink, site, telLink } from "@/core/site";
 import {
   FragranceGrid,
   getCollection,
@@ -111,6 +111,24 @@ export default async function HomePage() {
         </Container>
       </section>
 
+      <section className="relative overflow-hidden border-t">
+        <div className="absolute inset-0">
+          <Image src="/images/campaign.png" alt="" fill sizes="100vw" className="object-cover" />
+          <div className="bg-foreground/45 absolute inset-0" />
+        </div>
+        <Container className="relative flex min-h-[58vh] flex-col items-center justify-center gap-5 py-24 text-center">
+          <Reveal className="flex flex-col items-center gap-5">
+            <p className="label-eyebrow text-background/80">{dict.campaign.eyebrow}</p>
+            <h2 className="text-background max-w-2xl font-serif text-4xl font-light text-balance md:text-5xl">
+              {dict.campaign.title}
+            </h2>
+            <Link href="/collection" className={heroPrimary}>
+              {dict.campaign.cta}
+            </Link>
+          </Reveal>
+        </Container>
+      </section>
+
       <section id="contact" className="scroll-mt-24 border-t py-20 md:py-28">
         <Container className="flex flex-col items-center gap-6 text-center">
           <Reveal className="flex flex-col items-center gap-5">
@@ -128,6 +146,53 @@ export default async function HomePage() {
               </a>
             </div>
           </Reveal>
+        </Container>
+      </section>
+
+      <section className="border-t py-20 md:py-28">
+        <Container>
+          <Reveal className="flex flex-col items-center gap-2 text-center">
+            <p className="label-eyebrow text-muted-foreground">{dict.instagram.eyebrow}</p>
+            <a
+              href={site.instagramUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="font-serif text-3xl transition-opacity hover:opacity-70 md:text-4xl"
+            >
+              {dict.instagram.handle}
+            </a>
+          </Reveal>
+          <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {[1, 2, 3, 4].map((n) => (
+              <a
+                key={n}
+                href={site.instagramUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={dict.instagram.cta}
+                className="group focus-visible:ring-ring relative aspect-square overflow-hidden rounded-md border outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+              >
+                <Image
+                  src={`/images/ig-${n}.png`}
+                  alt=""
+                  fill
+                  sizes="(min-width: 640px) 25vw, 50vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              </a>
+            ))}
+          </div>
+          <div className="mt-8 flex justify-center">
+            <a
+              href={site.instagramUrl}
+              target="_blank"
+              rel="noreferrer"
+              className={cn(buttonVariants({ variant: "outline" }), "label-eyebrow gap-2")}
+            >
+              <InstagramIcon className="size-4" />
+              {dict.instagram.cta}
+            </a>
+          </div>
         </Container>
       </section>
     </>

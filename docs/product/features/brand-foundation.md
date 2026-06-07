@@ -35,6 +35,13 @@ No checkout, no customer login — purchase converts through inquiry.
 - 2026-06-07: Fragrance cards are display-only in v1; they become links when the product
   page ships (spec 2).
 
+## Decisions & gotchas
+
+- 2026-06-07 (spec 004): the homepage also carries a full-bleed **campaign band**
+  (`public/images/campaign.png`) and an **Instagram strip** (`public/images/ig-1…4.png`,
+  linking to `site.instagramUrl`). Below-the-fold imagery is lazy `next/image` — expected,
+  not a bug, if a full-page screenshot shows them blank.
+
 ## CUJs covered
 
 - CUJ-A — Discover the house ([critical-user-journeys.md](../critical-user-journeys.md))

@@ -55,6 +55,18 @@ export const fr = {
       "Nos parfums sont composés par de grands nez, formés dans les plus grandes maisons, à partir des essences les plus nobles — matières choisies aux quatre coins du monde, sans compromis.",
   },
 
+  campaign: {
+    eyebrow: "La maison Karnain",
+    title: "Sept fragrances d’exception. Une signature.",
+    cta: "Découvrir la collection",
+  },
+
+  instagram: {
+    eyebrow: "Suivez-nous",
+    handle: "@karnain",
+    cta: "Nous suivre sur Instagram",
+  },
+
   contact: {
     eyebrow: "Contact",
     title: "Une fragrance vous appelle ?",
