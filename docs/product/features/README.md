@@ -38,4 +38,5 @@ Key components, store, actions; anything non-obvious.
 | Feature                     | Status | Doc                                        |
 | --------------------------- | ------ | ------------------------------------------ |
 | Brand foundation & homepage | live   | [brand-foundation.md](brand-foundation.md) |
+| Shop — product page & bag   | live   | [shop.md](shop.md)                         |
 | Task list (skeleton demo)   | live   | [task-list.md](task-list.md)               |

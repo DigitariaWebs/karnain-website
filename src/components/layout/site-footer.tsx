@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Container } from "@/components/layout/container";
-import { InstagramIcon, MailIcon, WhatsAppIcon } from "@/components/ui/icons";
+import { InstagramIcon, MailIcon, PhoneIcon } from "@/components/ui/icons";
 import { getDictionary } from "@/core/i18n";
-import { emailLink, site, whatsappLink } from "@/core/site";
+import { emailLink, site, telLink } from "@/core/site";
 
 export function SiteFooter() {
   const dict = getDictionary();
@@ -28,19 +28,14 @@ export function SiteFooter() {
         </nav>
 
         <div className="flex flex-col items-start gap-3">
-          <p className="label-eyebrow text-muted-foreground">{dict.footer.orderTitle}</p>
-          <a
-            href={whatsappLink(dict.contact.whatsappMessage)}
-            target="_blank"
-            rel="noreferrer"
-            className={linkClass}
-          >
-            <WhatsAppIcon className="size-4" />
-            {dict.contact.whatsappCta}
-          </a>
+          <p className="label-eyebrow text-muted-foreground">{dict.footer.serviceTitle}</p>
           <a href={emailLink(dict.contact.emailSubject)} className={linkClass}>
             <MailIcon className="size-4" />
             {dict.contact.emailCta}
+          </a>
+          <a href={telLink()} className={linkClass}>
+            <PhoneIcon className="size-4" />
+            {dict.contact.phoneCta}
           </a>
         </div>
 

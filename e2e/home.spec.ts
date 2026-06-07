@@ -16,10 +16,9 @@ test("@cuj CUJ-A: visitor lands, understands the maison, finds a way forward", a
   // The collection lists the seed fragrances
   await expect(page.getByRole("heading", { name: "Tentation" }).first()).toBeVisible();
 
-  // Inquiry converts through WhatsApp — no checkout, no login on the page
-  const whatsapp = page.getByRole("link", { name: /Commander sur WhatsApp/ }).first();
-  await expect(whatsapp).toHaveAttribute("href", /wa\.me/);
-  await expect(page.getByRole("button", { name: /panier|ajouter au panier/i })).toHaveCount(0);
+  // Cart-based commerce: the bag is reachable from the header; WhatsApp appears nowhere.
+  await expect(page.getByRole("button", { name: "Ouvrir le panier" })).toBeVisible();
+  await expect(page.getByRole("link", { name: /whatsapp/i })).toHaveCount(0);
 
   await shot(page, "home-desktop");
 

@@ -3,11 +3,16 @@ import { Container } from "@/components/layout/container";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { InstagramIcon } from "@/components/ui/icons";
 import { getDictionary } from "@/core/i18n";
-import { site, whatsappLink } from "@/core/site";
+import { emailLink, site } from "@/core/site";
 
-export function SiteHeader() {
+type SiteHeaderProps = {
+  /** The bag control (a cart-feature element) is injected by `app` to respect layer boundaries. */
+  bag?: React.ReactNode;
+};
+
+export function SiteHeader({ bag }: SiteHeaderProps) {
   const dict = getDictionary();
-  const contactHref = whatsappLink(dict.contact.whatsappMessage);
+  const contactHref = emailLink(dict.contact.emailSubject);
 
   return (
     <header className="bg-background/85 sticky top-0 z-40 border-b backdrop-blur">
@@ -29,7 +34,7 @@ export function SiteHeader() {
             openLabel={dict.nav.openMenu}
             closeLabel={dict.nav.closeMenu}
             brand={site.name}
-            contactLabel={dict.contact.whatsappCta}
+            contactLabel={dict.contact.emailCta}
             contactHref={contactHref}
             instagramUrl={site.instagramUrl}
             instagramLabel={dict.footer.instagram}
@@ -44,16 +49,17 @@ export function SiteHeader() {
           {site.name}
         </Link>
 
-        <div className="flex items-center justify-end gap-5">
+        <div className="flex items-center justify-end gap-4">
           <a
             href={site.instagramUrl}
             aria-label={dict.footer.instagram}
             target="_blank"
             rel="noreferrer"
-            className="text-foreground/65 hover:text-foreground transition-colors"
+            className="text-foreground/65 hover:text-foreground hidden transition-colors sm:inline"
           >
             <InstagramIcon className="size-5" />
           </a>
+          {bag}
         </div>
       </Container>
     </header>

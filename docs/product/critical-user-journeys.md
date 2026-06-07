@@ -6,10 +6,11 @@ Adding or changing a CUJ is a product decision — PR must be approved by the pr
 
 ## Registry
 
-| ID     | Journey                      | Steps (user's words)                                                                                                   | E2E spec                | Screenshots |
-| ------ | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ----------------------- | ----------- |
-| CUJ-A  | Discover the house           | Open `/` → understand Karnain (hero, signatures, collection, story) → reach the collection or contact without friction | `e2e/home.spec.ts`      | `home-*`    |
-| CUJ-02 | Manage tasks (skeleton demo) | Open `/examples/tasks` → add a task → see it appear (animated) → toggle it done → remaining count updates              | `e2e/task-list.spec.ts` | `tasks-*`   |
+| ID     | Journey                           | Steps (user's words)                                                                                                   | E2E spec                | Screenshots                    |
+| ------ | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ----------------------- | ------------------------------ |
+| CUJ-A  | Discover the house                | Open `/` → understand Karnain (hero, signatures, collection, story) → reach the collection or contact without friction | `e2e/home.spec.ts`      | `home-*`                       |
+| CUJ-B  | Explore a fragrance, fill the bag | Open a fragrance → read notes, enlarge the gallery → add to bag → see the bag drawer + subtotal → open the cart page   | `e2e/product.spec.ts`   | `product-*`, `bag-*`, `cart-*` |
+| CUJ-02 | Manage tasks (skeleton demo)      | Open `/examples/tasks` → add a task → see it appear (animated) → toggle it done → remaining count updates              | `e2e/task-list.spec.ts` | `tasks-*`                      |
 
 ## Rules
 

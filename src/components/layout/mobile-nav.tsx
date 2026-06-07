@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, m } from "@/components/motion";
-import { CloseIcon, InstagramIcon, MenuIcon, WhatsAppIcon } from "@/components/ui/icons";
+import { CloseIcon, InstagramIcon, MailIcon, MenuIcon } from "@/components/ui/icons";
 
 type NavItem = { label: string; href: string };
 
@@ -101,14 +101,14 @@ export function MobileNav({
             </nav>
 
             <div className="mt-auto flex items-center justify-between border-t px-6 py-6">
-              <Link
+              <a
                 href={contactHref}
                 onClick={() => setOpen(false)}
                 className="label-eyebrow inline-flex items-center gap-2"
               >
-                <WhatsAppIcon className="size-4" />
+                <MailIcon className="size-4" />
                 {contactLabel}
-              </Link>
+              </a>
               <a
                 href={instagramUrl}
                 aria-label={instagramLabel}

@@ -2,9 +2,9 @@ import Link from "next/link";
 import { Container } from "@/components/layout/container";
 import { Reveal } from "@/components/motion";
 import { buttonVariants } from "@/components/ui/button";
-import { MailIcon, WhatsAppIcon } from "@/components/ui/icons";
+import { MailIcon, PhoneIcon } from "@/components/ui/icons";
 import { getDictionary } from "@/core/i18n";
-import { emailLink, whatsappLink } from "@/core/site";
+import { emailLink, telLink } from "@/core/site";
 import {
   FragranceGrid,
   getCollection,
@@ -27,7 +27,6 @@ export default async function HomePage() {
     getFragrances(),
     getCollection("karnain-addicte"),
   ]);
-  const contactHref = whatsappLink(dict.contact.whatsappMessage);
 
   return (
     <>
@@ -102,13 +101,13 @@ export default async function HomePage() {
             <h2 className={cn("max-w-2xl", heading)}>{dict.contact.title}</h2>
             <p className="text-muted-foreground max-w-xl">{dict.contact.body}</p>
             <div className="mt-2 flex flex-col items-center gap-3 sm:flex-row">
-              <a href={contactHref} target="_blank" rel="noreferrer" className={ctaPrimary}>
-                <WhatsAppIcon className="size-4" />
-                {dict.contact.whatsappCta}
-              </a>
-              <a href={emailLink(dict.contact.emailSubject)} className={ctaSecondary}>
+              <a href={emailLink(dict.contact.emailSubject)} className={ctaPrimary}>
                 <MailIcon className="size-4" />
                 {dict.contact.emailCta}
+              </a>
+              <a href={telLink()} className={ctaSecondary}>
+                <PhoneIcon className="size-4" />
+                {dict.contact.phoneCta}
               </a>
             </div>
           </Reveal>

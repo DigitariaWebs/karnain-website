@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Geist_Mono, Jost } from "next/font/google";
 import { MotionProvider } from "@/components/motion";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
+import { BagButton, CartDrawer, CartStoreProvider } from "@/features/cart";
 import { site } from "@/core/site";
 import "./globals.css";
 
@@ -50,11 +51,14 @@ export default function RootLayout({
         className={`${cormorant.variable} ${jost.variable} ${geistMono.variable} font-sans antialiased`}
       >
         <MotionProvider>
-          <div className="flex min-h-dvh flex-col">
-            <SiteHeader />
-            <main className="flex-1">{children}</main>
-            <SiteFooter />
-          </div>
+          <CartStoreProvider>
+            <div className="flex min-h-dvh flex-col">
+              <SiteHeader bag={<BagButton />} />
+              <main className="flex-1">{children}</main>
+              <SiteFooter />
+            </div>
+            <CartDrawer />
+          </CartStoreProvider>
         </MotionProvider>
       </body>
     </html>
