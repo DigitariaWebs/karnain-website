@@ -35,9 +35,9 @@ Key components, store, actions; anything non-obvious.
 
 ## Index
 
-| Feature                     | Status | Doc                                        |
-| --------------------------- | ------ | ------------------------------------------ |
-| Brand foundation & homepage | live   | [brand-foundation.md](brand-foundation.md) |
-| Shop — product page & bag   | live   | [shop.md](shop.md)                         |
-| Supabase data layer & admin | live   | [admin.md](admin.md)                       |
-| Task list (skeleton demo)   | live   | [task-list.md](task-list.md)               |
+| Feature                     | Status  | Doc                                          |
+| --------------------------- | ------- | -------------------------------------------- |
+| Brand foundation & homepage | live    | [brand-foundation.md](brand-foundation.md)   |
+| Shop — product page & bag   | live    | [shop.md](shop.md)                           |
+| Supabase data layer & admin | live    | [admin.md](admin.md)                         |
+| Task list (skeleton demo)   | removed | [archive/task-list.md](archive/task-list.md) |

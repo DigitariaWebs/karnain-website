@@ -1,7 +1,11 @@
 # Task list (demo feature)
 
-**Status:** live · **Slice:** `src/features/task-list` · **Routes:** `/examples/tasks`
-**Spec history:** specs/001-task-list (shipped 2026-06-07)
+> **Removed in spec 006 (2026-06-07)** — the skeleton demo was deleted now that the real
+> Karnain features have shipped. Kept here as institutional memory. The SSR-safe Zustand
+> pattern it demonstrated still lives in `docs/conventions/state.md` and the `cart` slice.
+
+**Status:** removed · **Slice (was):** `src/features/task-list` · **Routes (was):** `/examples/tasks`
+**Spec history:** specs/001-task-list (shipped 2026-06-07, removed 2026-06-07)
 
 ## What it does (user terms)
 

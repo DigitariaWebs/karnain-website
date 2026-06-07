@@ -46,6 +46,7 @@ export default function RootLayout({
     <html lang="fr" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body
         className={`${cormorant.variable} ${jost.variable} ${geistMono.variable} font-sans antialiased`}
+        suppressHydrationWarning
       >
         <MotionProvider>{children}</MotionProvider>
       </body>

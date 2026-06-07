@@ -1,62 +1,81 @@
-# NEXTJS-SKELETON
+# Karnain — Maison de parfum
 
-A production-grade Next.js starting point built on one premise: **AI agents write most of the code, the repository itself guarantees the quality.** Docs carry the knowledge, specs carry the intent, gates enforce the taste, screenshots prove the result.
+The website for **Karnain**, a French luxury perfume house: an elegant, French-language
+storefront — homepage, collection, product pages, a guest shopping bag, and an admin back
+office — built on a production-grade Next.js harness where specs carry intent, docs carry
+knowledge, gates enforce taste, and screenshots prove the result.
 
 > Agents: your entry point is [AGENTS.md](AGENTS.md). Humans: keep reading.
 
 ## Stack
 
-Next.js 16 (App Router, RSC) · TypeScript strict · Tailwind CSS v4 + shadcn/ui · Zustand 5 · Motion · Vitest + Testing Library · Playwright · pnpm · ESLint 9 (+ enforced module boundaries) · Prettier · Husky + commitlint.
+Next.js 16 (App Router, RSC) · TypeScript strict · Tailwind CSS v4 + shadcn/ui · Zustand 5 ·
+Motion · Supabase (`@supabase/ssr`) · Vitest + Testing Library · Playwright · pnpm ·
+ESLint 9 (+ enforced module boundaries) · Prettier. Hosting: Vercel.
 
 ## Quickstart
 
 ```bash
 corepack enable                       # or: npm i -g pnpm
 pnpm install
-pnpm exec playwright install chromium # once, for e2e + PDF rendering
+pnpm exec playwright install chromium # once, for e2e + screenshots
+cp .env.example .env.local            # optional — the site runs on a seed catalog without it
 pnpm dev                              # http://localhost:3000
-pnpm verify                           # the full local gate (same as CI)
-pnpm e2e:shots                        # CUJ tests + screenshot evidence
+pnpm verify                           # full local gate (lint, types, format, docs, tests, build)
+pnpm e2e                              # Playwright CUJs
 ```
 
-For AI-driven work, open the repo in Claude Code (or any agent that reads `AGENTS.md`) and start with `/create-spec`.
+## Supabase (optional until you have a project)
+
+The catalog reads from **Supabase when configured, and an in-code seed otherwise** — so the
+site works with zero configuration. To go live with a managed catalog + admin:
+
+1. Set in `.env.local`:
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=…
+   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=…
+   ```
+2. Run the migration `supabase/migrations/*_init_catalog.sql` against your project
+   (Supabase SQL editor or `supabase db push`). It creates `collections` + `fragrances`
+   with RLS (public read, admin write) and seeds the catalog.
+3. Create an admin user in the Supabase dashboard (Auth → Users). There is no public
+   sign-up. Sign in at **`/admin`** to manage fragrances.
+
+See [ADR-0005](docs/architecture/decisions/0005-supabase-data-layer.md) and
+[docs/product/features/admin.md](docs/product/features/admin.md).
+
+## Catalog
+
+Seven fragrances at €195 under “Karnain Addicte”: Tobacco, Cuir 90, Rose des Îles,
+Tentation, Sucre Addictée, Rose des Bois, Cherry Je t’aime. Real photography is wired for
+five; Sucre Addictée and Rose des Bois use elegant placeholders until photos exist. Source
+assets live in `public/images/`.
 
 ## How work happens here
 
-| You want to…                | Do                                                                                                                           |
-| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| Fix a bug / small change    | branch → implement → `pnpm verify` → PR (quick track)                                                                        |
-| Ship a feature              | `/create-spec` → `/plan-feature` → `/implement-feature` → `/verify-ui` → `/review` → `/feature-report` → PR → `/update-docs` |
-| Add a feature module        | `/new-module <name>`                                                                                                         |
-| Make a correction permanent | `/encode-lesson`                                                                                                             |
-
-The full process, roles (PM, dev, tester, designer), and conflict-avoidance model: [docs/process/workflow.md](docs/process/workflow.md).
+Spec-driven: a change starts as a spec in `specs/NNN-*`, is planned, implemented in small
+verified steps, and documented as a living feature doc in `docs/product/features/`. The
+process, roles, and conventions are in [AGENTS.md](AGENTS.md) and
+[docs/](docs/INDEX.md). A change is mergeable when `pnpm verify` and `pnpm e2e` pass.
 
 ## Map
 
 ```
 AGENTS.md            agent operating model (CLAUDE.md imports it)
-docs/                the knowledge tree — INDEX.md is the map
-specs/               constitution + feature specs (SDD)
-.claude/             skills, reviewer subagents, hooks, path rules
-src/app|features|components|hooks|lib|core   layered code (ESLint-enforced)
-e2e/                 Playwright CUJ tests → artifacts/screenshots evidence
-docs/reports/        generated feature reports (diff + screenshots + verdicts)
-scripts/             repo gates (docs links, typography) + report-to-PDF
-.github/             CI: quality gates, e2e + evidence upload, AI persona review
+docs/                knowledge tree — INDEX.md is the map; product/, conventions/, architecture/ADRs
+specs/               constitution + feature specs (001–006)
+src/app/             routes — (site) public chrome, (admin) back office
+src/features/        vertical slices: catalog, cart, admin
+src/components/       shared UI + layout (header, footer)
+src/core/            env, site config, i18n, supabase clients
+supabase/migrations/ catalog schema (RLS + seed)
+e2e/                 Playwright CUJs → artifacts/screenshots/ evidence
+public/images/        product + campaign imagery
 ```
 
-## CI
+## Why it’s built this way
 
-Three workflows run on every PR: **CI** (lint/types/format/docs/typography/tests/build), **E2E** (Playwright + screenshot artifacts), and **Claude persona review** (AI review board against `docs/personas/` — needs the `ANTHROPIC_API_KEY` secret; set it up with `/install-github-app` from Claude Code). Branch protection on `main` should require the first two.
-
-## Cloning this skeleton for a new project
-
-1. Fill in `docs/product/overview.md` (product identity) and prune `docs/product/features/`.
-2. Replace the painted-door stub in `src/features/task-list/actions.ts` or delete the example slice (`src/features/task-list` + `src/app/examples`).
-3. Update `.github/CODEOWNERS` placeholders and repo secrets.
-4. Write your first spec: `/create-spec`.
-
-## Why it's built this way
-
-Every structural decision has an ADR in [docs/architecture/decisions/](docs/architecture/decisions/README.md). The two-page version: [docs/architecture/overview.md](docs/architecture/overview.md) and the engineering [constitution](specs/constitution.md).
+Every structural decision has an ADR in
+[docs/architecture/decisions/](docs/architecture/decisions/README.md); the two-page version
+is [docs/architecture/overview.md](docs/architecture/overview.md) and the engineering
+[constitution](specs/constitution.md).

@@ -84,9 +84,9 @@ is git-ignored — only the selected/renamed images are committed.
 ## Current feature map
 
 Living per-feature docs: [features/](features/README.md). Journeys that must never
-break: [critical-user-journeys.md](critical-user-journeys.md). The example `task-list`
-slice and `/examples/tasks` route are skeleton demos, removed once the first real
-features land.
+break: [critical-user-journeys.md](critical-user-journeys.md). The skeleton’s `task-list`
+demo has been removed now that the real features have shipped (see
+[features/archive/task-list.md](features/archive/task-list.md)).
 
 ## Glossary
 
