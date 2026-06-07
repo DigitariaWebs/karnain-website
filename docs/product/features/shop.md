@@ -33,8 +33,10 @@ no customer login.
   “Passer la commande” + “coming soon”. Stripe + legal/CGV are a separate spec.
 - 2026-06-07: Bag is a **guest bag** persisted in `localStorage` (`karnain-cart`); the
   count is hydration-guarded so server HTML and first client render match.
-- 2026-06-07: Gallery imagery is placeholder; pass real `src` to `GalleryImage` and render
-  `next/image` in `fragrance-gallery.tsx` when the asset zip arrives.
+- 2026-06-07: Real photography is wired via `next/image` (cards, gallery, hero) for 5 of 7
+  fragrances; `Fragrance.images` holds public paths. **Sucre Addictée + Rose des Bois have no
+  photos** and fall back to the tonal placeholder. Add files to `public/images/fragrances/`
+  and extend their `images` array when photos exist. Hero uses `public/images/collection.png`.
 
 ## CUJs covered
 

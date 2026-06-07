@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { AnimatePresence, m } from "@/components/motion";
 import { ArrowRightIcon, CloseIcon } from "@/components/ui/icons";
 import { getDictionary } from "@/core/i18n";
@@ -16,13 +17,28 @@ function Panel({
   image,
   className,
   big,
+  contain,
   comingSoonLabel,
 }: {
   image: GalleryImage;
   className?: string;
   big?: boolean;
+  contain?: boolean;
   comingSoonLabel?: string;
 }) {
+  if (image.src) {
+    return (
+      <div className={cn("relative overflow-hidden rounded-md", !contain && "border", className)}>
+        <Image
+          src={image.src}
+          alt={image.alt}
+          fill
+          sizes={big ? "(min-width: 768px) 45vw, 100vw" : "120px"}
+          className={contain ? "object-contain" : "object-cover"}
+        />
+      </div>
+    );
+  }
   return (
     <div
       className={cn(
@@ -140,7 +156,12 @@ export function FragranceGallery({ images, comingSoonLabel }: FragranceGalleryPr
                   <ArrowRightIcon className="size-5 rotate-180" />
                 </button>
               ) : null}
-              <Panel image={current} big className="max-h-[72vh] w-full max-w-md flex-1" />
+              <Panel
+                image={current}
+                big
+                contain
+                className="aspect-[4/5] max-h-[80vh] w-full max-w-sm"
+              />
               {count > 1 ? (
                 <button
                   type="button"

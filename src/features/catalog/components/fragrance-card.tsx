@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { formatEur } from "@/lib/format";
 import type { Fragrance } from "../types";
@@ -7,12 +8,10 @@ type FragranceCardProps = {
   comingSoonLabel: string;
 };
 
-/**
- * Fragrance card, linked to its product page. Imagery is an intentional tonal placeholder
- * (the brand’s initial in faint serif) until the asset zip arrives — swap the panel for
- * `next/image` then.
- */
+/** Fragrance card, linked to its product page. Falls back to a tonal placeholder when a
+ * fragrance has no imagery yet. */
 export function FragranceCard({ fragrance, comingSoonLabel }: FragranceCardProps) {
+  const image = fragrance.images[0];
   return (
     <Link
       href={`/parfums/${fragrance.slug}`}
@@ -20,16 +19,25 @@ export function FragranceCard({ fragrance, comingSoonLabel }: FragranceCardProps
       className="group focus-visible:ring-ring block rounded-md outline-none focus-visible:ring-2 focus-visible:ring-offset-4"
     >
       <article>
-        <div className="from-secondary to-card group-hover:border-foreground/25 relative flex aspect-[3/4] items-center justify-center overflow-hidden rounded-md border bg-linear-to-b transition-colors">
-          <span
-            aria-hidden
-            className="text-foreground/10 group-hover:text-foreground/20 font-serif text-7xl font-light transition-colors"
-          >
-            {fragrance.name.charAt(0)}
-          </span>
-          <span className="label-eyebrow text-muted-foreground/60 absolute bottom-3">
-            {comingSoonLabel}
-          </span>
+        <div className="group-hover:border-foreground/25 relative aspect-[3/4] overflow-hidden rounded-md border transition-colors">
+          {image ? (
+            <Image
+              src={image}
+              alt={fragrance.name}
+              fill
+              sizes="(min-width: 1024px) 25vw, 50vw"
+              className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+            />
+          ) : (
+            <div className="from-secondary to-card flex h-full items-center justify-center bg-linear-to-b">
+              <span aria-hidden className="text-foreground/10 font-serif text-7xl font-light">
+                {fragrance.name.charAt(0)}
+              </span>
+              <span className="label-eyebrow text-muted-foreground/60 absolute bottom-3">
+                {comingSoonLabel}
+              </span>
+            </div>
+          )}
         </div>
         <div className="mt-4 space-y-1">
           <h3 className="group-hover:text-foreground/70 font-serif text-xl transition-colors">

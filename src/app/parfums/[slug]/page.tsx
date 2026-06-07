@@ -43,9 +43,12 @@ export default async function FragrancePage({ params }: { params: Promise<Params
     getFragrances(),
   ]);
   const others = all.filter((item) => item.slug !== fragrance.slug).slice(0, 4);
-  const images: GalleryImage[] = [1, 2, 3, 4].map((n) => ({
-    alt: `${fragrance.name} — visuel ${n}`,
-  }));
+  const images: GalleryImage[] = fragrance.images.length
+    ? fragrance.images.map((src, index) => ({
+        src,
+        alt: `${fragrance.name} — visuel ${index + 1}`,
+      }))
+    : [1, 2, 3, 4].map((n) => ({ alt: `${fragrance.name} — visuel ${n}` }));
 
   return (
     <Container className="py-12 md:py-16">

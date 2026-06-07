@@ -15,6 +15,8 @@ export type Fragrance = {
   readonly description: string;
   readonly notes: ScentNotes;
   readonly featured: boolean;
+  /** Public image paths (first is the card/primary image). Empty until imagery exists. */
+  readonly images: readonly string[];
 };
 
 /** A curated grouping of fragrances. */

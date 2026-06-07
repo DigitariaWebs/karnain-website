@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/layout/container";
 import { Reveal } from "@/components/motion";
@@ -19,6 +20,10 @@ const ctaSecondary = cn(
   "label-eyebrow h-12 gap-2 px-8",
 );
 const heading = "font-serif text-4xl font-light md:text-5xl";
+const heroPrimary =
+  "label-eyebrow bg-background text-foreground hover:bg-background/90 inline-flex h-12 items-center justify-center gap-2 rounded-md px-8 transition-colors";
+const heroSecondary =
+  "label-eyebrow border-background/50 text-background hover:bg-background/10 inline-flex h-12 items-center justify-center gap-2 rounded-md border px-8 transition-colors";
 
 export default async function HomePage() {
   const dict = getDictionary();
@@ -30,19 +35,31 @@ export default async function HomePage() {
 
   return (
     <>
-      <section className="from-secondary/60 to-background relative overflow-hidden bg-linear-to-b">
-        <Container className="flex min-h-[78vh] flex-col items-center justify-center gap-6 py-24 text-center">
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="/images/collection.png"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+          <div className="bg-foreground/50 absolute inset-0" />
+          <div className="from-background absolute inset-0 bg-linear-to-t to-transparent" />
+        </div>
+        <Container className="relative flex min-h-[82vh] flex-col items-center justify-center gap-6 py-24 text-center">
           <Reveal className="flex flex-col items-center gap-6">
-            <p className="label-eyebrow text-muted-foreground">{dict.hero.eyebrow}</p>
-            <h1 className="max-w-3xl font-serif text-5xl leading-[1.05] font-light text-balance md:text-7xl">
+            <p className="label-eyebrow text-background/80">{dict.hero.eyebrow}</p>
+            <h1 className="text-background max-w-3xl font-serif text-5xl leading-[1.05] font-light text-balance md:text-7xl">
               {dict.hero.statement}
             </h1>
-            <p className="text-muted-foreground max-w-xl text-base md:text-lg">{dict.hero.lede}</p>
+            <p className="text-background/85 max-w-xl text-base md:text-lg">{dict.hero.lede}</p>
             <div className="mt-2 flex flex-col items-center gap-3 sm:flex-row">
-              <Link href="#collection" className={ctaPrimary}>
+              <Link href="#collection" className={heroPrimary}>
                 {dict.hero.primaryCta}
               </Link>
-              <Link href="#contact" className={ctaSecondary}>
+              <Link href="#contact" className={heroSecondary}>
                 {dict.hero.secondaryCta}
               </Link>
             </div>

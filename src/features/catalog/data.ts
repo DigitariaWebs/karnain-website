@@ -25,6 +25,7 @@ const fragrances: readonly Fragrance[] = [
   {
     slug: "tobacco",
     name: "Tobacco",
+    images: ["/images/fragrances/tobacco-1.png"],
     collectionSlug: "karnain-addicte",
     priceEur: PRICE_EUR,
     mood: "Chaud, boisé, enveloppant.",
@@ -40,6 +41,7 @@ const fragrances: readonly Fragrance[] = [
   {
     slug: "cuir-90",
     name: "Cuir 90",
+    images: ["/images/fragrances/cuir-90-1.png", "/images/fragrances/cuir-90-2.png"],
     collectionSlug: "karnain-addicte",
     priceEur: PRICE_EUR,
     mood: "Cuir noble, fumé, racé.",
@@ -54,6 +56,7 @@ const fragrances: readonly Fragrance[] = [
   {
     slug: "rose-des-iles",
     name: "Rose des Îles",
+    images: ["/images/fragrances/rose-des-iles-1.png", "/images/fragrances/rose-des-iles-2.png"],
     collectionSlug: "karnain-addicte",
     priceEur: PRICE_EUR,
     mood: "Rose solaire, voyageuse.",
@@ -68,6 +71,7 @@ const fragrances: readonly Fragrance[] = [
   {
     slug: "tentation",
     name: "Tentation",
+    images: ["/images/fragrances/tentation-1.png", "/images/fragrances/tentation-2.png"],
     collectionSlug: "karnain-addicte",
     priceEur: PRICE_EUR,
     mood: "Gourmand, sensuel, irrésistible.",
@@ -83,6 +87,7 @@ const fragrances: readonly Fragrance[] = [
   {
     slug: "sucre-addictee",
     name: "Sucre Addictée",
+    images: [],
     collectionSlug: "karnain-addicte",
     priceEur: PRICE_EUR,
     mood: "Sucré, addictif, lumineux.",
@@ -97,6 +102,7 @@ const fragrances: readonly Fragrance[] = [
   {
     slug: "rose-des-bois",
     name: "Rose des Bois",
+    images: [],
     collectionSlug: "karnain-addicte",
     priceEur: PRICE_EUR,
     mood: "Rose boisée, profonde.",
@@ -111,6 +117,7 @@ const fragrances: readonly Fragrance[] = [
   {
     slug: "cherry-je-taime",
     name: "Cherry Je t’aime",
+    images: ["/images/fragrances/cherry-je-taime-1.png"],
     collectionSlug: "karnain-addicte",
     priceEur: PRICE_EUR,
     mood: "Cerise pétillante, audacieuse.",
