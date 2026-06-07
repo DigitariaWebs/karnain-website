@@ -1,11 +1,22 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Cormorant_Garamond, Geist_Mono, Jost } from "next/font/google";
 import { MotionProvider } from "@/components/motion";
+import { SiteHeader } from "@/components/layout/site-header";
+import { SiteFooter } from "@/components/layout/site-footer";
+import { site } from "@/core/site";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  display: "swap",
+});
+
+const jost = Jost({
+  variable: "--font-jost",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
@@ -15,10 +26,17 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Next.js Skeleton",
-    template: "%s · Next.js Skeleton",
+    default: `${site.name} — ${site.baseline}`,
+    template: `%s · ${site.name}`,
   },
-  description: "A production-grade Next.js starting point, built to be driven by AI agents.",
+  description: site.description,
+  metadataBase: new URL(site.url),
+  openGraph: {
+    title: `${site.name} — ${site.baseline}`,
+    description: site.description,
+    locale: "fr_FR",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -27,9 +45,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}>
-        <MotionProvider>{children}</MotionProvider>
+    <html lang="fr" suppressHydrationWarning>
+      <body
+        className={`${cormorant.variable} ${jost.variable} ${geistMono.variable} font-sans antialiased`}
+      >
+        <MotionProvider>
+          <div className="flex min-h-dvh flex-col">
+            <SiteHeader />
+            <main className="flex-1">{children}</main>
+            <SiteFooter />
+          </div>
+        </MotionProvider>
       </body>
     </html>
   );

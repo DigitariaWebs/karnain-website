@@ -1,54 +1,63 @@
 @import "tailwindcss";
 
 /*
- * Design tokens — Tailwind v4 CSS-first config (docs/conventions/styling.md).
- * Semantic tokens below are the only colors features may use.
- * shadcn/ui-compatible naming so `pnpm dlx shadcn add <component>` drops in cleanly.
+ * Karnain design tokens — Tailwind v4 CSS-first config (docs/conventions/styling.md).
+ * Luxury, French-inspired: warm ivory canvas, ink text, hairline rules, restrained gold
+ * detail. Color comes from product/campaign imagery, not from UI chrome.
+ * shadcn/ui-compatible names are kept so `pnpm dlx shadcn add <component>` drops in cleanly.
  */
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --radius: 0.625rem;
+  /* Warm ivory canvas + ink */
+  --background: oklch(0.985 0.006 85);
+  --foreground: oklch(0.21 0.012 70);
+  --card: oklch(0.992 0.004 85);
+  --card-foreground: oklch(0.21 0.012 70);
+  --popover: oklch(0.992 0.004 85);
+  --popover-foreground: oklch(0.21 0.012 70);
+  /* Ink primary (CTAs) on ivory */
+  --primary: oklch(0.24 0.012 70);
+  --primary-foreground: oklch(0.985 0.006 85);
+  /* Soft warm neutrals */
+  --secondary: oklch(0.95 0.006 80);
+  --secondary-foreground: oklch(0.24 0.012 70);
+  --muted: oklch(0.95 0.006 80);
+  --muted-foreground: oklch(0.52 0.012 70);
+  --accent: oklch(0.94 0.008 80);
+  --accent-foreground: oklch(0.24 0.012 70);
+  --destructive: oklch(0.55 0.18 25);
+  --destructive-foreground: oklch(0.985 0.006 85);
+  /* Hairlines + focus */
+  --border: oklch(0.88 0.006 80);
+  --input: oklch(0.88 0.006 80);
+  --ring: oklch(0.45 0.02 70);
+  /* Restrained gold — fine details only, never hover fills */
+  --gold: oklch(0.72 0.085 78);
+  --radius: 0.25rem;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 10%);
+  /* Deep espresso night — kept for completeness; the site ships light. */
+  --background: oklch(0.18 0.01 60);
+  --foreground: oklch(0.96 0.006 85);
+  --card: oklch(0.21 0.01 60);
+  --card-foreground: oklch(0.96 0.006 85);
+  --popover: oklch(0.21 0.01 60);
+  --popover-foreground: oklch(0.96 0.006 85);
+  --primary: oklch(0.96 0.006 85);
+  --primary-foreground: oklch(0.21 0.012 70);
+  --secondary: oklch(0.27 0.01 60);
+  --secondary-foreground: oklch(0.96 0.006 85);
+  --muted: oklch(0.27 0.01 60);
+  --muted-foreground: oklch(0.72 0.01 70);
+  --accent: oklch(0.3 0.012 70);
+  --accent-foreground: oklch(0.96 0.006 85);
+  --destructive: oklch(0.62 0.17 25);
+  --destructive-foreground: oklch(0.96 0.006 85);
+  --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --ring: oklch(0.72 0.07 78);
+  --gold: oklch(0.78 0.09 80);
 }
 
 @theme inline {
@@ -71,11 +80,13 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --font-sans: var(--font-geist-sans);
+  --color-gold: var(--gold);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 6px);
+  --font-serif: var(--font-cormorant);
+  --font-sans: var(--font-jost);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -87,5 +98,32 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+  /* Refined serif headings by default; letter-spaced uppercase labels are opt-in. */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer utilities {
+  /* Letter-spaced uppercase micro-label (nav, eyebrows, badges). */
+  .label-eyebrow {
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.75rem;
+    font-weight: 500;
   }
 }

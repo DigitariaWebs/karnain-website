@@ -35,6 +35,7 @@ Key components, store, actions; anything non-obvious.
 
 ## Index
 
-| Feature          | Status | Doc                          |
-| ---------------- | ------ | ---------------------------- |
-| Task list (demo) | live   | [task-list.md](task-list.md) |
+| Feature                     | Status | Doc                                        |
+| --------------------------- | ------ | ------------------------------------------ |
+| Brand foundation & homepage | live   | [brand-foundation.md](brand-foundation.md) |
+| Task list (skeleton demo)   | live   | [task-list.md](task-list.md)               |
