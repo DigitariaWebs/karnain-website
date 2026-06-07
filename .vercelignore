@@ -1,0 +1,8 @@
+# Not needed for the Vercel build — keep the upload lean.
+3d-showcase
+artifacts
+public/*.zip
+e2e
+*.tsbuildinfo
+.playwright-mcp
+test-results

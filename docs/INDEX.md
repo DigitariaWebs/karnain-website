@@ -33,11 +33,11 @@ The docs tree is the repository's long-term memory. Agents and humans ground the
 
 ## Product (what we are building)
 
-| File                                                                   | What it answers                                      |
-| ---------------------------------------------------------------------- | ---------------------------------------------------- |
-| [product/overview.md](product/overview.md)                             | Product identity — fill in when cloning the skeleton |
-| [product/critical-user-journeys.md](product/critical-user-journeys.md) | The CUJs that must never break; screenshot targets   |
-| [product/features/](product/features/README.md)                        | Living docs, one per shipped feature                 |
+| File                                                                   | What it answers                                    |
+| ---------------------------------------------------------------------- | -------------------------------------------------- |
+| [product/overview.md](product/overview.md)                             | Product identity — Karnain, the perfume house      |
+| [product/critical-user-journeys.md](product/critical-user-journeys.md) | The CUJs that must never break; screenshot targets |
+| [product/features/](product/features/README.md)                        | Living docs, one per shipped feature               |
 
 ## Review personas
 
