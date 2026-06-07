@@ -37,6 +37,12 @@ No checkout, no customer login — purchase converts through inquiry.
 
 ## Decisions & gotchas
 
+- 2026-06-07 (spec 007): the **hero background is a 3D product video** (`public/video/hero.mp4`,
+  a 360° Tobacco-bottle render) via `HeroBackground` — autoplay/muted/loop/playsInline, with
+  a poster (`public/images/hero-poster.png`) and a `prefers-reduced-motion` fallback to the
+  still. A gradient scrim (`from-black/75…`) plus text-shadow on the headline guarantees
+  contrast over the light scene. The 3D source (`3d-showcase/`) is git-ignored; only the
+  exported web assets are committed.
 - 2026-06-07 (spec 004): the homepage also carries a full-bleed **campaign band**
   (`public/images/campaign.png`) and an **Instagram strip** (`public/images/ig-1…4.png`,
   linking to `site.instagramUrl`). Below-the-fold imagery is lazy `next/image` — expected,

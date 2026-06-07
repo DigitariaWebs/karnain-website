@@ -44,3 +44,6 @@ yarn-error.log*
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+# 3D source project (blend, frames) — only the exported web assets in public/ are committed
+/3d-showcase/
