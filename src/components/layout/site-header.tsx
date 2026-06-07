@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/layout/container";
 import { MobileNav } from "@/components/layout/mobile-nav";
@@ -41,12 +42,15 @@ export function SiteHeader({ bag }: SiteHeaderProps) {
           />
         </div>
 
-        <Link
-          href="/"
-          aria-label={dict.nav.brandHome}
-          className="justify-self-center font-sans text-xl font-medium tracking-[0.3em] uppercase md:text-2xl"
-        >
-          {site.name}
+        <Link href="/" aria-label={dict.nav.brandHome} className="justify-self-center">
+          <Image
+            src="/logo.png"
+            alt=""
+            width={420}
+            height={101}
+            priority
+            className="h-6 w-auto md:h-7"
+          />
         </Link>
 
         <div className="flex items-center justify-end gap-4">

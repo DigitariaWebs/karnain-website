@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/layout/container";
 import { InstagramIcon, MailIcon, PhoneIcon } from "@/components/ui/icons";
@@ -14,7 +15,7 @@ export function SiteFooter() {
     <footer className="mt-24 border-t">
       <Container className="grid gap-12 py-16 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
         <div className="space-y-4">
-          <p className="font-sans text-xl font-medium tracking-[0.3em] uppercase">{site.name}</p>
+          <Image src="/logo.png" alt={site.name} width={420} height={101} className="h-7 w-auto" />
           <p className="text-muted-foreground max-w-xs text-sm">{dict.footer.tagline}</p>
         </div>
 

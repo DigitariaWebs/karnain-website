@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, m } from "@/components/motion";
 import { CloseIcon, InstagramIcon, MailIcon, MenuIcon } from "@/components/ui/icons";
@@ -73,9 +74,7 @@ export function MobileNav({
             className="bg-background fixed inset-0 z-50 flex flex-col"
           >
             <div className="flex h-16 items-center justify-between px-6">
-              <span className="font-sans text-lg font-medium tracking-[0.3em] uppercase">
-                {brand}
-              </span>
+              <Image src="/logo.png" alt={brand} width={420} height={101} className="h-6 w-auto" />
               <button
                 type="button"
                 aria-label={closeLabel}
