@@ -10,6 +10,7 @@ export type Fragrance = {
   readonly slug: string;
   readonly name: string;
   readonly collectionSlug: string;
+  readonly family: string;
   readonly priceEur: number;
   readonly mood: string;
   readonly description: string;

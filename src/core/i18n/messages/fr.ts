@@ -9,7 +9,7 @@ export const fr = {
     openMenu: "Ouvrir le menu",
     closeMenu: "Fermer le menu",
     items: [
-      { label: "Collection", href: "/#collection" },
+      { label: "Collection", href: "/collection" },
       { label: "La maison", href: "/#histoire" },
       { label: "Contact", href: "/#contact" },
     ],
@@ -36,6 +36,14 @@ export const fr = {
       "Une collection de parfums d’exception — des classiques que les amoureux du parfum se doivent de posséder.",
     imageComingSoon: "Visuel à venir",
     fromLabel: "À partir de",
+  },
+
+  collectionPage: {
+    eyebrow: "La collection",
+    title: "Karnain Addicte",
+    intro: "Sept fragrances d’exception. Affinez par famille pour trouver la vôtre.",
+    filterLabel: "Filtrer",
+    filterAll: "Tout",
   },
 
   story: {

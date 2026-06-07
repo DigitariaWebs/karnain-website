@@ -3,6 +3,7 @@ export type { Collection, Fragrance } from "./types";
 export {
   getCollection,
   getCollections,
+  getFamilies,
   getFeaturedFragrances,
   getFragrance,
   getFragrances,

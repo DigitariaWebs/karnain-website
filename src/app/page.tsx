@@ -56,7 +56,7 @@ export default async function HomePage() {
             </h1>
             <p className="text-background/85 max-w-xl text-base md:text-lg">{dict.hero.lede}</p>
             <div className="mt-2 flex flex-col items-center gap-3 sm:flex-row">
-              <Link href="#collection" className={heroPrimary}>
+              <Link href="/collection" className={heroPrimary}>
                 {dict.hero.primaryCta}
               </Link>
               <Link href="#contact" className={heroSecondary}>

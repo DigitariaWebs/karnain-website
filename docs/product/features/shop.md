@@ -23,7 +23,10 @@ no customer login.
 - **Catalog product UI** (`src/features/catalog`): `FragranceGallery` (client lightbox,
   keyboard + reduced-motion), `ScentNotes` (server pyramid), `FragranceCard` (linked).
 - **Routes**: `app/parfums/[slug]` (`generateStaticParams` + `generateMetadata`,
-  `loading`/`error`/`not-found`); `app/panier` → `CartView`.
+  `loading`/`error`/`not-found`); `app/panier` → `CartView`; `app/collection` — the catalog
+  grid with scent-family filters via `searchParams` (`?famille=…`, URL-as-state,
+  server-rendered, works without client JS). `Fragrance.family` + `getFamilies()` back the
+  filters (CUJ-C).
 
 ## Decisions & gotchas
 

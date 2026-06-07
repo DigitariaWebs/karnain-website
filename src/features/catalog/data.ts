@@ -24,6 +24,7 @@ const collections: readonly Collection[] = [
 const fragrances: readonly Fragrance[] = [
   {
     slug: "tobacco",
+    family: "Boisés & ambrés",
     name: "Tobacco",
     images: ["/images/fragrances/tobacco-1.png"],
     collectionSlug: "karnain-addicte",
@@ -40,6 +41,7 @@ const fragrances: readonly Fragrance[] = [
   },
   {
     slug: "cuir-90",
+    family: "Boisés & ambrés",
     name: "Cuir 90",
     images: ["/images/fragrances/cuir-90-1.png", "/images/fragrances/cuir-90-2.png"],
     collectionSlug: "karnain-addicte",
@@ -55,6 +57,7 @@ const fragrances: readonly Fragrance[] = [
   },
   {
     slug: "rose-des-iles",
+    family: "Floraux",
     name: "Rose des Îles",
     images: ["/images/fragrances/rose-des-iles-1.png", "/images/fragrances/rose-des-iles-2.png"],
     collectionSlug: "karnain-addicte",
@@ -70,6 +73,7 @@ const fragrances: readonly Fragrance[] = [
   },
   {
     slug: "tentation",
+    family: "Gourmands",
     name: "Tentation",
     images: ["/images/fragrances/tentation-1.png", "/images/fragrances/tentation-2.png"],
     collectionSlug: "karnain-addicte",
@@ -86,6 +90,7 @@ const fragrances: readonly Fragrance[] = [
   },
   {
     slug: "sucre-addictee",
+    family: "Gourmands",
     name: "Sucre Addictée",
     images: [],
     collectionSlug: "karnain-addicte",
@@ -101,6 +106,7 @@ const fragrances: readonly Fragrance[] = [
   },
   {
     slug: "rose-des-bois",
+    family: "Floraux",
     name: "Rose des Bois",
     images: [],
     collectionSlug: "karnain-addicte",
@@ -116,6 +122,7 @@ const fragrances: readonly Fragrance[] = [
   },
   {
     slug: "cherry-je-taime",
+    family: "Gourmands",
     name: "Cherry Je t’aime",
     images: ["/images/fragrances/cherry-je-taime-1.png"],
     collectionSlug: "karnain-addicte",
@@ -153,4 +160,9 @@ export async function getCollection(slug: string): Promise<Collection | undefine
 
 export async function getFragrancesByCollection(slug: string): Promise<readonly Fragrance[]> {
   return fragrances.filter((fragrance) => fragrance.collectionSlug === slug);
+}
+
+/** Distinct scent families, in display order. */
+export async function getFamilies(): Promise<readonly string[]> {
+  return [...new Set(fragrances.map((fragrance) => fragrance.family))];
 }

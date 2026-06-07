@@ -26,7 +26,7 @@ export function CartView() {
         <div className="mt-10 flex flex-col items-start gap-4">
           <p className="text-muted-foreground">{t.empty}</p>
           <Link
-            href="/#collection"
+            href="/collection"
             className={cn(buttonVariants({ variant: "outline" }), "label-eyebrow")}
           >
             {t.emptyCta}
@@ -49,7 +49,7 @@ export function CartView() {
             </Button>
             <p className="text-muted-foreground text-center text-xs">{t.checkoutSoon}</p>
             <Link
-              href="/#collection"
+              href="/collection"
               className="text-muted-foreground hover:text-foreground block text-center text-sm underline-offset-4 hover:underline"
             >
               {t.continue}

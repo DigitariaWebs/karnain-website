@@ -53,7 +53,7 @@ export default async function FragrancePage({ params }: { params: Promise<Params
   return (
     <Container className="py-12 md:py-16">
       <Link
-        href="/#collection"
+        href="/collection"
         className="label-eyebrow text-muted-foreground hover:text-foreground inline-flex items-center gap-2 transition-colors"
       >
         <ArrowRightIcon className="size-4 rotate-180" />
