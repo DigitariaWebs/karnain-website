@@ -18,3 +18,4 @@ ADRs capture decisions that shape the codebase: what we chose, what we rejected,
 | [0002](0002-module-boundaries.md)    | Layered module boundaries enforced by ESLint                                                                       | Accepted |
 | [0003](0003-spec-driven-workflow.md) | Right-sized spec-driven development workflow                                                                       | Accepted |
 | [0004](0004-ai-harness.md)           | Repo-as-harness: agent docs, skills, hooks, persona review in CI                                                   | Accepted |
+| [0005](0005-supabase-data-layer.md)  | Supabase for the catalog data layer + admin auth, with seed fallback when unconfigured                             | Accepted |

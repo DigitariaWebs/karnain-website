@@ -1,17 +1,18 @@
+import { isSupabaseConfigured } from "@/core/supabase/config";
 import type { Collection, Fragrance } from "./types";
 
 /**
  * Catalog data access — the seam between the site and its data source.
  *
- * v1 reads an in-code seed (the fragrances live on karnain.fr today). The selectors are
- * async on purpose: when the Supabase catalog lands (its own spec), the queries replace
- * the bodies below with the SAME signatures, and nothing downstream changes.
- * Kept free of `server-only` so the selectors stay unit-testable.
+ * Reads from Supabase when configured, else the in-code seed below (the fragrances live on
+ * karnain.fr today). The Supabase repository is a `server-only` module imported dynamically
+ * only when configured — so this file stays client/test-safe and the site works with zero
+ * configuration. Selectors keep stable signatures; nothing downstream changes.
  */
 
 const PRICE_EUR = 195;
 
-const collections: readonly Collection[] = [
+const seedCollections: readonly Collection[] = [
   {
     slug: "karnain-addicte",
     name: "Karnain Addicte",
@@ -21,7 +22,7 @@ const collections: readonly Collection[] = [
   },
 ];
 
-const fragrances: readonly Fragrance[] = [
+const seedFragrances: readonly Fragrance[] = [
   {
     slug: "tobacco",
     family: "Boisés & ambrés",
@@ -138,31 +139,49 @@ const fragrances: readonly Fragrance[] = [
   },
 ];
 
+async function allFragrances(): Promise<readonly Fragrance[]> {
+  if (isSupabaseConfigured()) {
+    const { fetchFragrances } = await import("./supabase-repo");
+    const rows = await fetchFragrances();
+    if (rows) return rows;
+  }
+  return seedFragrances;
+}
+
+async function allCollections(): Promise<readonly Collection[]> {
+  if (isSupabaseConfigured()) {
+    const { fetchCollections } = await import("./supabase-repo");
+    const rows = await fetchCollections();
+    if (rows) return rows;
+  }
+  return seedCollections;
+}
+
 export async function getFragrances(): Promise<readonly Fragrance[]> {
-  return fragrances;
+  return allFragrances();
 }
 
 export async function getFeaturedFragrances(limit = 4): Promise<readonly Fragrance[]> {
-  return fragrances.filter((fragrance) => fragrance.featured).slice(0, limit);
+  return (await allFragrances()).filter((fragrance) => fragrance.featured).slice(0, limit);
 }
 
 export async function getFragrance(slug: string): Promise<Fragrance | undefined> {
-  return fragrances.find((fragrance) => fragrance.slug === slug);
+  return (await allFragrances()).find((fragrance) => fragrance.slug === slug);
 }
 
 export async function getCollections(): Promise<readonly Collection[]> {
-  return collections;
+  return allCollections();
 }
 
 export async function getCollection(slug: string): Promise<Collection | undefined> {
-  return collections.find((collection) => collection.slug === slug);
+  return (await allCollections()).find((collection) => collection.slug === slug);
 }
 
 export async function getFragrancesByCollection(slug: string): Promise<readonly Fragrance[]> {
-  return fragrances.filter((fragrance) => fragrance.collectionSlug === slug);
+  return (await allFragrances()).filter((fragrance) => fragrance.collectionSlug === slug);
 }
 
 /** Distinct scent families, in display order. */
 export async function getFamilies(): Promise<readonly string[]> {
-  return [...new Set(fragrances.map((fragrance) => fragrance.family))];
+  return [...new Set((await allFragrances()).map((fragrance) => fragrance.family))];
 }

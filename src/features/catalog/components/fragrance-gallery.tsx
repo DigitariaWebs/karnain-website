@@ -18,12 +18,14 @@ function Panel({
   className,
   big,
   contain,
+  priority,
   comingSoonLabel,
 }: {
   image: GalleryImage;
   className?: string;
   big?: boolean;
   contain?: boolean;
+  priority?: boolean;
   comingSoonLabel?: string;
 }) {
   if (image.src) {
@@ -33,6 +35,7 @@ function Panel({
           src={image.src}
           alt={image.alt}
           fill
+          priority={priority}
           sizes={big ? "(min-width: 768px) 45vw, 100vw" : "120px"}
           className={contain ? "object-contain" : "object-cover"}
         />
@@ -98,7 +101,13 @@ export function FragranceGallery({ images, comingSoonLabel }: FragranceGalleryPr
         onClick={() => setOpen(true)}
         className="focus-visible:ring-ring block w-full rounded-md outline-none focus-visible:ring-2 focus-visible:ring-offset-4"
       >
-        <Panel image={current} comingSoonLabel={comingSoonLabel} big className="aspect-[4/5]" />
+        <Panel
+          image={current}
+          comingSoonLabel={comingSoonLabel}
+          big
+          priority
+          className="aspect-[4/5]"
+        />
       </button>
 
       {count > 1 ? (

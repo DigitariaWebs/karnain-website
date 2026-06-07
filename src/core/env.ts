@@ -9,8 +9,10 @@ import { z } from "zod";
  */
 const serverEnvSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
-  // Add real server vars here, mirrored in .env.example, e.g.:
-  // DATABASE_URL: z.string().url(),
+  // Server-only Supabase key, reserved for future privileged jobs (optional — the public
+  // site and admin use the publishable key + RLS). Public Supabase config lives in
+  // src/core/supabase/config.ts (NEXT_PUBLIC_*).
+  SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
 });
 
 export const env = serverEnvSchema.parse(process.env);
