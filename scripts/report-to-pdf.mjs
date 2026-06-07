@@ -22,8 +22,32 @@ if (!existsSync(mdPath)) {
   process.exit(1);
 }
 
-const body = marked.parse(readFileSync(mdPath, "utf8"));
-const baseHref = pathToFileURL(resolve("docs/reports") + "/").href;
+const reportsDir = resolve("docs/reports");
+
+/** Inline local images as base64 data URIs so they render regardless of document origin
+ * (Chromium blocks file:// subresources from a setContent page). */
+function inlineImages(markup) {
+  return markup.replace(/<img([^>]*?)src="([^"]+)"([^>]*)>/g, (match, pre, src, post) => {
+    if (/^(https?:|data:)/.test(src)) return match;
+    try {
+      const filePath = resolve(reportsDir, src);
+      const ext = filePath.split(".").pop().toLowerCase();
+      const mime =
+        ext === "svg"
+          ? "image/svg+xml"
+          : ext === "jpg" || ext === "jpeg"
+            ? "image/jpeg"
+            : `image/${ext}`;
+      const data = readFileSync(filePath).toString("base64");
+      return `<img${pre}src="data:${mime};base64,${data}"${post}>`;
+    } catch {
+      return match;
+    }
+  });
+}
+
+const body = inlineImages(marked.parse(readFileSync(mdPath, "utf8")));
+const baseHref = pathToFileURL(reportsDir + "/").href;
 const html = `<!doctype html>
 <html><head><meta charset="utf-8"><base href="${baseHref}"><style>
   body { font: 14px/1.6 -apple-system, "Segoe UI", sans-serif; color: #18181b; max-width: 760px; margin: 40px auto; padding: 0 24px; }
