@@ -4,4 +4,6 @@ export { AddToBagButton } from "./components/add-to-bag-button";
 export { BagButton } from "./components/bag-button";
 export { CartDrawer } from "./components/cart-drawer";
 export { CartView } from "./components/cart-view";
+export { CheckoutButton } from "./components/checkout-button";
+export { ClearBag } from "./components/clear-bag";
 export type { CartItemInput, CartLine } from "./types";

@@ -62,6 +62,18 @@ sign-up) to create, edit, and delete fragrances. Visitors never see admin UI.
 - Removing a thumbnail drops it from the list but does not delete the Storage object (orphan
   cleanup is a later concern). Verified live end-to-end (admin upload, public read, anon denied).
 
+## Checkout + Orders (spec 011)
+
+- Bag → `/api/checkout` (app route): **re-prices from the catalog** (client prices never
+  trusted), creates a `pending` order via the **service-role** client, then a Stripe Checkout
+  Session; `/api/stripe/webhook` marks it `paid`. `/commande/merci` confirms + clears the bag.
+- Orders (`orders` + `order_items`) are **admin-only** (RLS role claim); the admin reads them
+  with their own session. `/admin/commandes` lists orders; `/admin/commandes/[id]` shows items
+  and a status update (`pending → paid → fulfilled → cancelled`).
+- Gated on config: no Stripe keys ⇒ the bag shows “paiement bientôt” and `pnpm verify` stays
+  green. Going live needs `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`,
+  `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`. See ADR-0006.
+
 ## CUJs covered
 
 - No public CUJ (admin is internal). Public CUJs A/B/C are unaffected by the route-group move.

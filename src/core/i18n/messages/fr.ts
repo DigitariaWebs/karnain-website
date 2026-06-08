@@ -96,6 +96,7 @@ export const fr = {
     continue: "Continuer mes achats",
     viewBag: "Voir le panier",
     checkout: "Passer la commande",
+    checkoutPending: "Redirection vers le paiement…",
     checkoutSoon: "Le paiement en ligne arrive bientôt.",
   },
 

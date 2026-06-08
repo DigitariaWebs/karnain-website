@@ -111,6 +111,32 @@ export async function deleteFragrance(slug: string): Promise<ActionResult> {
   return { ok: true };
 }
 
+const orderStatusInput = z.object({
+  id: z.string().uuid(),
+  status: z.enum(["pending", "paid", "fulfilled", "cancelled"]),
+});
+
+export async function updateOrderStatus(
+  _prev: ActionResult | null,
+  formData: FormData,
+): Promise<ActionResult> {
+  const supabase = await authedClient();
+  if (!supabase) return { ok: false, error: "Non autorisé." };
+  const parsed = orderStatusInput.safeParse({
+    id: formData.get("id"),
+    status: formData.get("status"),
+  });
+  if (!parsed.success) return { ok: false, error: "Statut invalide." };
+  const { error } = await supabase
+    .from("orders")
+    .update({ status: parsed.data.status })
+    .eq("id", parsed.data.id);
+  if (error) return { ok: false, error: error.message };
+  revalidatePath("/admin/commandes");
+  revalidatePath(`/admin/commandes/${parsed.data.id}`);
+  return { ok: true };
+}
+
 export async function signOutAdmin(): Promise<void> {
   if (isSupabaseConfigured()) {
     const supabase = await createSupabaseServerClient();

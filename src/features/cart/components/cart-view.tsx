@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Container } from "@/components/layout/container";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { getDictionary } from "@/core/i18n";
 import { useHydrated } from "@/hooks/use-hydrated";
 import { formatEur } from "@/lib/format";
@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { cartSubtotal } from "../lib";
 import { useCartStore } from "../provider";
 import { CartLineRow } from "./cart-line-row";
+import { CheckoutButton } from "./checkout-button";
 
 export function CartView() {
   const lines = useCartStore((state) => state.lines);
@@ -44,10 +45,7 @@ export function CartView() {
               <span className="label-eyebrow text-muted-foreground">{t.subtotal}</span>
               <span className="text-xl">{formatEur(cartSubtotal(lines))}</span>
             </div>
-            <Button size="lg" disabled className="label-eyebrow h-12 w-full">
-              {t.checkout}
-            </Button>
-            <p className="text-muted-foreground text-center text-xs">{t.checkoutSoon}</p>
+            <CheckoutButton />
             <Link
               href="/collection"
               className="text-muted-foreground hover:text-foreground block text-center text-sm underline-offset-4 hover:underline"

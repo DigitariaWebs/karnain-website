@@ -59,9 +59,11 @@ Design tokens (color, type, spacing) live in `src/app/globals.css` per
   fragrances to a bag, review it in a drawer and a cart page, and proceed toward checkout.
   WhatsApp is not used — it reads as mass-market for the maison. (Revised 2026-06-07 from an
   earlier inquiry model.)
-- **Checkout / payment: deferred (Stripe later).** v1 ships the bag/cart experience; the
-  payment step is a later, spec-gated decision pending payment + legal/CGV. Until then the
-  cart page presents the order and a clear “coming soon” for online payment.
+- **Checkout / payment: Stripe, scaffolded (spec 011).** The bag → `/api/checkout` →
+  Stripe Checkout flow, an orders schema, and an admin Orders back office (`/admin/commandes`)
+  are built and gated on config: with no Stripe keys the bag shows “paiement bientôt”; adding
+  keys + `SUPABASE_SERVICE_ROLE_KEY` flips it live. Orders are admin-only (RLS); the server
+  re-prices from the catalog. Pending: client Stripe keys + legal/CGV.
 - **Bag is a guest bag**, persisted locally (no customer login to shop).
 - **Data layer: Supabase.** Live — perfumes and collections read from the Karnain Supabase
   project; the in-code seed is the fallback when env is absent (e.g. local/CI). See ADR-0005.
