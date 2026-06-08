@@ -12,10 +12,11 @@ ADRs capture decisions that shape the codebase: what we chose, what we rejected,
 
 ## Index
 
-| #                                    | Decision                                                                                                           | Status   |
-| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------ | -------- |
-| [0001](0001-baseline-stack.md)       | Baseline stack: Next.js App Router, TS strict, Tailwind v4 + shadcn/ui, Zustand, Motion, Vitest + Playwright, pnpm | Accepted |
-| [0002](0002-module-boundaries.md)    | Layered module boundaries enforced by ESLint                                                                       | Accepted |
-| [0003](0003-spec-driven-workflow.md) | Right-sized spec-driven development workflow                                                                       | Accepted |
-| [0004](0004-ai-harness.md)           | Repo-as-harness: agent docs, skills, hooks, persona review in CI                                                   | Accepted |
-| [0005](0005-supabase-data-layer.md)  | Supabase for the catalog data layer + admin auth, with seed fallback when unconfigured                             | Accepted |
+| #                                          | Decision                                                                                                           | Status   |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ | -------- |
+| [0001](0001-baseline-stack.md)             | Baseline stack: Next.js App Router, TS strict, Tailwind v4 + shadcn/ui, Zustand, Motion, Vitest + Playwright, pnpm | Accepted |
+| [0002](0002-module-boundaries.md)          | Layered module boundaries enforced by ESLint                                                                       | Accepted |
+| [0003](0003-spec-driven-workflow.md)       | Right-sized spec-driven development workflow                                                                       | Accepted |
+| [0004](0004-ai-harness.md)                 | Repo-as-harness: agent docs, skills, hooks, persona review in CI                                                   | Accepted |
+| [0005](0005-supabase-data-layer.md)        | Supabase for the catalog data layer + admin auth, with seed fallback when unconfigured                             | Accepted |
+| [0006](0006-stripe-checkout-and-orders.md) | Stripe Checkout (hosted) + orders via a service-role write path; admin-managed credentials (spec 012)              | Accepted |

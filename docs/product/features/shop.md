@@ -1,7 +1,7 @@
 # Shop — product page & bag
 
 **Status:** live · **Slices:** src/features/catalog (product UI), src/features/cart · **Routes:** /parfums/[slug], /panier
-**Spec history:** specs/002-shop-product-and-cart (active 2026-06-07)
+**Spec history:** specs/002-shop-product-and-cart (2026-06-07); checkout in specs/011-checkout-orders + 012-admin-integration-settings (2026-06-08)
 
 ## What it does (user terms)
 
@@ -9,8 +9,9 @@ A visitor opens a fragrance at `/parfums/<slug>`: an enlargeable gallery, the na
 collection, mood, description, scent notes, and price, with an “Ajouter au panier”
 button. Adding opens a bag drawer and updates a header bag count; the bag (drawer and the
 `/panier` page) shows lines, quantity controls, per-line removal, and a subtotal. The bag
-persists across reloads. Checkout/online payment is marked as coming soon. No WhatsApp,
-no customer login.
+persists across reloads. From the bag, **Commander** runs Stripe Checkout when configured
+(otherwise it shows “paiement bientôt”); a paid order lands in the admin Orders back office. No
+WhatsApp, no customer login.
 
 ## How it works
 
@@ -32,14 +33,17 @@ no customer login.
 
 - 2026-06-07: Commerce model changed from inquiry/WhatsApp to **cart/bag** (LV/JPG style).
   WhatsApp removed everywhere; contact is email + phone concierge. See `docs/product/overview.md`.
-- 2026-06-07: **Checkout/payment deferred** — the cart page shows a disabled
-  “Passer la commande” + “coming soon”. Stripe + legal/CGV are a separate spec.
+- 2026-06-08: **Checkout shipped (Stripe).** `CheckoutButton` asks `GET /api/checkout` whether
+  checkout is live, then posts the bag to `/api/checkout` → Stripe Checkout Session; the webhook
+  marks the order `paid`; `/commande/merci` confirms + clears the bag. Gated on config (no keys →
+  “paiement bientôt”). Credentials are admin-managed (`/admin/parametres`). See spec 011/012,
+  ADR-0006, and `docs/product/features/admin.md`. Legal/CGV copy still pending.
 - 2026-06-07: Bag is a **guest bag** persisted in `localStorage` (`karnain-cart`); the
   count is hydration-guarded so server HTML and first client render match.
-- 2026-06-07: Real photography is wired via `next/image` (cards, gallery, hero) for 5 of 7
-  fragrances; `Fragrance.images` holds public paths. **Sucre Addictée + Rose des Bois have no
-  photos** and fall back to the tonal placeholder. Add files to `public/images/fragrances/`
-  and extend their `images` array when photos exist. Hero uses `public/images/collection.png`.
+- 2026-06-08: Catalog content is the brand’s **real copy + full notes** (spec 009); descriptions
+  render multi-paragraph; cards show Nouveau/Best-seller badges. Admins upload photos to Supabase
+  Storage (spec 010) — `Fragrance.images` holds repo paths and/or Storage URLs. **Sucre Addictée +
+  Rose des Bois** still have no photos (tonal placeholder) until uploaded.
 
 ## CUJs covered
 

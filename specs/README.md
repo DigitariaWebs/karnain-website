@@ -27,6 +27,17 @@ ship → /update-docs                           status: shipped; learnings disti
 
 ## Index
 
-| #                            | Spec                   | Status  |
-| ---------------------------- | ---------------------- | ------- |
-| [001](001-task-list/spec.md) | Task list demo feature | shipped |
+| #                                             | Spec                                                  | Status  |
+| --------------------------------------------- | ----------------------------------------------------- | ------- |
+| [001](001-brand-foundation-homepage/spec.md)  | Brand foundation & luxury homepage                    | shipped |
+| [002](002-shop-product-and-cart/spec.md)      | Shop — product page & guest bag                       | shipped |
+| [003](003-collection-page/spec.md)            | Collection page with scent-family filters             | shipped |
+| [004](004-editorial-instagram/spec.md)        | Editorial campaign + Instagram strip                  | shipped |
+| [005](005-supabase-admin/spec.md)             | Supabase data layer + admin back office               | shipped |
+| [006](006-polish-handoff/spec.md)             | Polish & handoff                                      | shipped |
+| 007 · 008                                     | 3D video hero + brand logo (lightweight, no spec dir) | shipped |
+| [009](009-catalog-enrichment/spec.md)         | Catalog enrichment: real copy, draft status, badges   | shipped |
+| [010](010-admin-image-upload/spec.md)         | Admin image upload (Supabase Storage)                 | shipped |
+| [011](011-checkout-orders/spec.md)            | Checkout (Stripe) + orders back office                | shipped |
+| [012](012-admin-integration-settings/spec.md) | Admin-managed integration settings (secure)           | shipped |
+| [001-task-list](001-task-list/spec.md)        | Skeleton demo (template reference)                    | example |
