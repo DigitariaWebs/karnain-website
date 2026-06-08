@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { type ActionResult, saveFragrance } from "../actions";
+import { ImageUploader } from "./image-uploader";
 
 /** Structural values — avoids importing the catalog feature (boundary rule). */
 type ProductFormValues = {
@@ -115,10 +116,8 @@ export function ProductForm({ initial }: { initial?: ProductFormValues }) {
       </div>
 
       <div className="space-y-2">
-        <label htmlFor="images" className={fieldLabel}>
-          Images, chemins séparés par des virgules
-        </label>
-        <Input id="images" name="images" defaultValue={initial?.images.join(", ")} />
+        <p className={fieldLabel}>Images</p>
+        <ImageUploader name="images" initial={initial?.images ?? []} slug={initial?.slug} />
       </div>
 
       <div className="space-y-2">
