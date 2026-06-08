@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { saveAppSettings } from "@/core/settings/server";
 import { isSupabaseConfigured } from "@/core/supabase/config";
 import { createSupabaseServerClient } from "@/core/supabase/server";
 
@@ -134,6 +135,33 @@ export async function updateOrderStatus(
   if (error) return { ok: false, error: error.message };
   revalidatePath("/admin/commandes");
   revalidatePath(`/admin/commandes/${parsed.data.id}`);
+  return { ok: true };
+}
+
+export async function saveSettings(
+  _prev: ActionResult | null,
+  formData: FormData,
+): Promise<ActionResult> {
+  // Verify the caller is an admin (role claim) before writing via the service role.
+  if (!isSupabaseConfigured()) return { ok: false, error: "Supabase non configuré." };
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (user?.app_metadata?.role !== "admin") return { ok: false, error: "Non autorisé." };
+
+  const value = (entry: FormDataEntryValue | null) =>
+    typeof entry === "string" && entry.trim() ? entry.trim() : undefined;
+
+  const ok = await saveAppSettings({
+    stripeSecretKey: value(formData.get("stripeSecretKey")),
+    stripeWebhookSecret: value(formData.get("stripeWebhookSecret")),
+    stripePublishableKey: value(formData.get("stripePublishableKey")),
+  });
+  if (!ok) {
+    return { ok: false, error: "Échec de l’enregistrement (clé service role requise)." };
+  }
+  revalidatePath("/admin/parametres");
   return { ok: true };
 }
 

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { isStripeConfigured } from "@/core/stripe/config";
+import { getStripeCredentials, isCheckoutLive } from "@/core/stripe/credentials";
 import { getStripe } from "@/core/stripe/server";
 import { isSupabaseConfigured } from "@/core/supabase/config";
 import { getServiceClient, hasServiceRole } from "@/core/supabase/service";
@@ -7,14 +7,20 @@ import { getFragrance } from "@/features/catalog";
 
 type IncomingItem = { slug?: unknown; quantity?: unknown };
 
+/** Tells the bag whether online checkout is live, without exposing any secret. */
+export async function GET() {
+  return NextResponse.json({ enabled: await isCheckoutLive() });
+}
+
 /**
  * Creates a pending order and a Stripe Checkout Session. Prices are re-read from the catalog —
- * the client-sent prices are never trusted. Returns `{ url }` to redirect to Stripe, or
- * `{ error: "not-configured" }` (200) when Stripe/service-role aren't set so the bag can show
+ * client-sent prices are never trusted. Stripe credentials resolve from admin settings then env.
+ * Returns `{ error: "not-configured" }` (200) when checkout isn’t live so the bag degrades to
  * the “bientôt” state without crashing.
  */
 export async function POST(request: Request) {
-  if (!isStripeConfigured() || !isSupabaseConfigured() || !hasServiceRole()) {
+  const creds = await getStripeCredentials();
+  if (!creds.secretKey || !isSupabaseConfigured() || !hasServiceRole()) {
     return NextResponse.json({ error: "not-configured" });
   }
 
@@ -69,7 +75,7 @@ export async function POST(request: Request) {
   }
 
   const origin = new URL(request.url).origin;
-  const session = await getStripe().checkout.sessions.create({
+  const session = await getStripe(creds.secretKey).checkout.sessions.create({
     mode: "payment",
     line_items: lines.map((line) => ({
       quantity: line.quantity,

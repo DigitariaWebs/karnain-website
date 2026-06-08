@@ -1,17 +1,21 @@
 import "server-only";
 import Stripe from "stripe";
-import { stripeConfig } from "./config";
 
-let client: Stripe | null = null;
+const clients = new Map<string, Stripe>();
 
 /**
- * Lazily constructs the Stripe client. Throws if called without a secret key — callers must
- * guard with `isStripeConfigured()` first so the app stays importable with no keys.
+ * Returns a Stripe client for the given secret key (cached per key). The key is resolved at call
+ * time from `getStripeCredentials()` (admin settings or env), so callers pass it in rather than
+ * reading env directly.
  */
-export function getStripe(): Stripe {
-  if (!stripeConfig.secretKey) {
-    throw new Error("Stripe is not configured (STRIPE_SECRET_KEY missing).");
+export function getStripe(secretKey: string): Stripe {
+  if (!secretKey) {
+    throw new Error("Stripe secret key missing.");
   }
-  client ??= new Stripe(stripeConfig.secretKey);
+  let client = clients.get(secretKey);
+  if (!client) {
+    client = new Stripe(secretKey);
+    clients.set(secretKey, client);
+  }
   return client;
 }

@@ -1,16 +1,17 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
-import { isStripeConfigured, stripeConfig } from "@/core/stripe/config";
+import { getStripeCredentials } from "@/core/stripe/credentials";
 import { getStripe } from "@/core/stripe/server";
 import { getServiceClient, hasServiceRole } from "@/core/supabase/service";
 
 /**
  * Stripe webhook — confirms an order once payment completes. Verifies the signature against the
- * webhook secret, then marks the order `paid` and captures the buyer’s contact details. Stripe
- * retries on non-2xx, so we return 200 quickly even for events we ignore.
+ * resolved webhook secret (admin settings or env), then marks the order `paid` and captures the
+ * buyer’s details. Stripe retries on non-2xx, so we return 200 quickly for ignored events.
  */
 export async function POST(request: Request) {
-  if (!isStripeConfigured() || !hasServiceRole() || !stripeConfig.webhookSecret) {
+  const creds = await getStripeCredentials();
+  if (!creds.secretKey || !creds.webhookSecret || !hasServiceRole()) {
     return NextResponse.json({ error: "not-configured" }, { status: 400 });
   }
 
@@ -22,7 +23,11 @@ export async function POST(request: Request) {
   const payload = await request.text();
   let event: Stripe.Event;
   try {
-    event = getStripe().webhooks.constructEvent(payload, signature, stripeConfig.webhookSecret);
+    event = getStripe(creds.secretKey).webhooks.constructEvent(
+      payload,
+      signature,
+      creds.webhookSecret,
+    );
   } catch {
     return NextResponse.json({ error: "bad-signature" }, { status: 400 });
   }

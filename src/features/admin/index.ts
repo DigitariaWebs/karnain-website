@@ -9,3 +9,6 @@ export { OrderTable } from "./components/order-table";
 export { OrderStatusForm } from "./components/order-status-form";
 export { getOrders, getOrder } from "./orders";
 export type { Order, OrderItem, OrderStatus } from "./orders";
+export { SettingsForm } from "./components/settings-form";
+export { getSettingsStatus } from "./settings";
+export type { SettingsStatus } from "./settings";

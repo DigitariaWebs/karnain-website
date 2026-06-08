@@ -32,6 +32,16 @@ the app shippable with no keys, and store orders securely in the existing Supaba
 | A bespoke payments backend                     | Far more to build/operate; Stripe gives checkout, webhooks, dashboard.                       |
 | Put checkout logic in a `checkout` feature     | Would need to import the `catalog` feature (boundary violation); app routes compose instead. |
 
+## Addendum (spec 012) — admin-managed credentials
+
+Stripe credentials can be entered from the admin (`/admin/parametres`) instead of env. They live
+in an `app_settings` table with **RLS enabled and no policies** — unreachable via any browser
+token (even an admin’s); only the **service-role** server reads/writes it. `getStripeCredentials()`
+resolves settings first, then env. The save action verifies the caller’s `role = 'admin'` claim
+before writing via the service role, and secrets are never returned to the browser (the settings
+UI shows only masked status). The **service-role key itself stays in env** — it bootstraps the
+ability to read the stored settings, so it cannot be self-managed.
+
 ## Consequences
 
 - Positive: no card data on our infra; orders centralized in Supabase with admin-only access;

@@ -1,22 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { getDictionary } from "@/core/i18n";
 import { useCartStore } from "../provider";
 
 /**
- * Bag → checkout. When Stripe is configured (a publishable key is present in the client bundle),
- * posts the bag to `/api/checkout` and redirects to the Stripe Checkout Session. Otherwise the
- * button is disabled and the “paiement bientôt” note shows — no keys, no crash.
+ * Bag → checkout. Asks `/api/checkout` whether online checkout is live (no secret reaches the
+ * client). When live, posts the bag and redirects to the Stripe Checkout Session; otherwise the
+ * button stays disabled with the “paiement bientôt” note.
  */
 export function CheckoutButton() {
   const lines = useCartStore((state) => state.lines);
+  const [enabled, setEnabled] = useState<boolean | null>(null);
   const [pending, setPending] = useState(false);
   const [unavailable, setUnavailable] = useState(false);
   const t = getDictionary().cart;
 
-  const checkoutEnabled = Boolean(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+  useEffect(() => {
+    let active = true;
+    fetch("/api/checkout")
+      .then((response) => response.json())
+      .then((data: { enabled?: boolean }) => {
+        if (active) setEnabled(Boolean(data.enabled));
+      })
+      .catch(() => {
+        if (active) setEnabled(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   async function onCheckout() {
     setPending(true);
@@ -42,13 +56,15 @@ export function CheckoutButton() {
     }
   }
 
-  if (!checkoutEnabled) {
+  if (enabled !== true) {
     return (
       <>
         <Button size="lg" disabled className="label-eyebrow h-12 w-full">
           {t.checkout}
         </Button>
-        <p className="text-muted-foreground text-center text-xs">{t.checkoutSoon}</p>
+        {enabled === false ? (
+          <p className="text-muted-foreground text-center text-xs">{t.checkoutSoon}</p>
+        ) : null}
       </>
     );
   }
