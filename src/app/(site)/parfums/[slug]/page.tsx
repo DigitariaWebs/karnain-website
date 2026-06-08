@@ -73,9 +73,11 @@ export default async function FragrancePage({ params }: { params: Promise<Params
           </div>
 
           <p className="text-xl">{formatEur(fragrance.priceEur)}</p>
-          <p className="text-muted-foreground max-w-prose leading-relaxed">
-            {fragrance.description}
-          </p>
+          <div className="text-muted-foreground max-w-prose space-y-4 leading-relaxed">
+            {fragrance.description.split("\n\n").map((paragraph, index) => (
+              <p key={index}>{paragraph}</p>
+            ))}
+          </div>
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <AddToBagButton

@@ -38,6 +38,17 @@ sign-up) to create, edit, and delete fragrances. Visitors never see admin UI.
   are set in Vercel; the catalog migration is applied (1 collection, 7 fragrances). Remaining:
   create an admin user with the `admin` role to use `/admin`.
 
+## Decisions & gotchas (spec 009)
+
+- 2026-06-08: fragrances carry **`status`** (`published`/`draft`), **`is_new`**, and
+  **`is_best_seller`**. **RLS hides drafts** from non-admins (`status = 'published' or role =
+'admin'`), so the app filters nothing — anon reads (incl. `generateStaticParams`) see
+  published only; the admin (role claim) sees all. Cards show a discreet Nouveau/Best-seller
+  badge; the admin form edits status + flags; the dashboard badges drafts.
+- 2026-06-08: the catalog now holds the **brand's real descriptions + full notes** (synced
+  from the old WooCommerce site). Old-site has 3 draft-only products (Mon Chéri, Nuit
+  Parisienne, and Rose des Bois is a draft there) — not yet added here; tracked in spec 009.
+
 ## CUJs covered
 
 - No public CUJ (admin is internal). Public CUJs A/B/C are unaffected by the route-group move.

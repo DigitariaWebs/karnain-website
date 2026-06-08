@@ -8,6 +8,7 @@ type ProductRow = {
   name: string;
   family: string;
   priceEur: number;
+  status: "published" | "draft";
 };
 
 export function ProductTable({ fragrances }: { fragrances: readonly ProductRow[] }) {
@@ -34,6 +35,11 @@ export function ProductTable({ fragrances }: { fragrances: readonly ProductRow[]
               >
                 {fragrance.name}
               </Link>
+              {fragrance.status === "draft" ? (
+                <span className="bg-secondary text-muted-foreground ml-2 rounded-full px-2 py-0.5 text-[10px] tracking-wide uppercase">
+                  Brouillon
+                </span>
+              ) : null}
             </td>
             <td className="text-muted-foreground py-3">{fragrance.family}</td>
             <td className="py-3">{formatEur(fragrance.priceEur)}</td>

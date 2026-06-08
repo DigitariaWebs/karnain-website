@@ -26,6 +26,9 @@ const fragranceRowSchema = z.object({
     .nullable(),
   images: z.array(z.string()).nullable(),
   featured: z.boolean(),
+  status: z.enum(["published", "draft"]).default("published"),
+  is_new: z.boolean().default(false),
+  is_best_seller: z.boolean().default(false),
 });
 
 const collectionRowSchema = z.object({
@@ -51,6 +54,9 @@ function toFragrance(row: z.infer<typeof fragranceRowSchema>): Fragrance {
     },
     images: row.images ?? [],
     featured: row.featured,
+    status: row.status,
+    isNew: row.is_new,
+    isBestSeller: row.is_best_seller,
   };
 }
 

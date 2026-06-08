@@ -24,6 +24,9 @@ const fragranceInput = z.object({
   notesHeart: z.string().default(""),
   notesBase: z.string().default(""),
   images: z.string().default(""),
+  status: z.enum(["published", "draft"]).default("published"),
+  isNew: z.boolean().default(false),
+  isBestSeller: z.boolean().default(false),
 });
 
 /** Returns an authed Supabase client, or null when unconfigured / not signed in. */
@@ -61,6 +64,9 @@ export async function saveFragrance(
     notesHeart: formData.get("notesHeart") ?? "",
     notesBase: formData.get("notesBase") ?? "",
     images: formData.get("images") ?? "",
+    status: formData.get("status") ?? "published",
+    isNew: formData.get("isNew") === "on",
+    isBestSeller: formData.get("isBestSeller") === "on",
   });
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Champs invalides." };
@@ -82,9 +88,13 @@ export async function saveFragrance(
     },
     images: toList(input.images),
     featured: input.featured,
+    status: input.status,
+    is_new: input.isNew,
+    is_best_seller: input.isBestSeller,
   });
   if (error) return { ok: false, error: error.message };
 
+  revalidatePath("/");
   revalidatePath("/admin");
   revalidatePath("/collection");
   revalidatePath(`/parfums/${input.slug}`);

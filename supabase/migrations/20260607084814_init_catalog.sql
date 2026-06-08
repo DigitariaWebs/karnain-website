@@ -23,6 +23,9 @@ create table if not exists public.fragrances (
   notes jsonb not null default '{"head":[],"heart":[],"base":[]}'::jsonb,
   images text[] not null default '{}',
   featured boolean not null default false,
+  status text not null default 'published' check (status in ('published', 'draft')),
+  is_new boolean not null default false,
+  is_best_seller boolean not null default false,
   sort_order int not null default 0,
   created_at timestamptz not null default now()
 );
@@ -41,8 +44,10 @@ create policy "collections admin write"
   using ((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin')
   with check ((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin');
 
-create policy "fragrances public read"
-  on public.fragrances for select to anon, authenticated using (true);
+-- Public reads see published only; admins (role claim) see drafts too.
+create policy "fragrances read"
+  on public.fragrances for select to anon, authenticated
+  using (status = 'published' or (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin');
 create policy "fragrances admin write"
   on public.fragrances for all to authenticated
   using ((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin')

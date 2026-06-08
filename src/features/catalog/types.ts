@@ -18,6 +18,10 @@ export type Fragrance = {
   readonly featured: boolean;
   /** Public image paths (first is the card/primary image). Empty until imagery exists. */
   readonly images: readonly string[];
+  /** `draft` fragrances are hidden from the public site (visible only in admin). */
+  readonly status: "published" | "draft";
+  readonly isNew: boolean;
+  readonly isBestSeller: boolean;
 };
 
 /** A curated grouping of fragrances. */

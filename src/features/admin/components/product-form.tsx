@@ -17,6 +17,9 @@ type ProductFormValues = {
   featured: boolean;
   notes: { head: readonly string[]; heart: readonly string[]; base: readonly string[] };
   images: readonly string[];
+  status: "published" | "draft";
+  isNew: boolean;
+  isBestSeller: boolean;
 };
 
 const fieldLabel = "label-eyebrow text-muted-foreground";
@@ -118,15 +121,50 @@ export function ProductForm({ initial }: { initial?: ProductFormValues }) {
         <Input id="images" name="images" defaultValue={initial?.images.join(", ")} />
       </div>
 
-      <label className="flex items-center gap-2 text-sm">
-        <input
-          type="checkbox"
-          name="featured"
-          defaultChecked={initial?.featured}
-          className="accent-primary size-4"
-        />
-        Mise en avant dans les signatures
-      </label>
+      <div className="space-y-2">
+        <label htmlFor="status" className={fieldLabel}>
+          Statut
+        </label>
+        <select
+          id="status"
+          name="status"
+          defaultValue={initial?.status ?? "published"}
+          className="border-input focus-visible:ring-ring rounded-md border bg-transparent px-3 py-2 text-sm outline-none focus-visible:ring-2"
+        >
+          <option value="published">Publié</option>
+          <option value="draft">Brouillon</option>
+        </select>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <label className="flex items-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            name="featured"
+            defaultChecked={initial?.featured}
+            className="accent-primary size-4"
+          />
+          Mise en avant dans les signatures
+        </label>
+        <label className="flex items-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            name="isBestSeller"
+            defaultChecked={initial?.isBestSeller}
+            className="accent-primary size-4"
+          />
+          Best-seller
+        </label>
+        <label className="flex items-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            name="isNew"
+            defaultChecked={initial?.isNew}
+            className="accent-primary size-4"
+          />
+          Nouveau
+        </label>
+      </div>
 
       {state && !state.ok ? <p className="text-destructive text-sm">{state.error}</p> : null}
 

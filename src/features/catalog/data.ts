@@ -4,10 +4,11 @@ import type { Collection, Fragrance } from "./types";
 /**
  * Catalog data access — the seam between the site and its data source.
  *
- * Reads from Supabase when configured, else the in-code seed below (the fragrances live on
- * karnain.fr today). The Supabase repository is a `server-only` module imported dynamically
- * only when configured — so this file stays client/test-safe and the site works with zero
- * configuration. Selectors keep stable signatures; nothing downstream changes.
+ * Reads from Supabase when configured, else the in-code seed below (a faithful mirror of the
+ * Supabase rows). The Supabase repository is a `server-only` module imported dynamically only
+ * when configured — so this file stays client/test-safe and the site works with zero
+ * configuration. Draft visibility is enforced by Supabase RLS (anon sees published only); the
+ * seed contains no drafts. Selectors keep stable signatures; nothing downstream changes.
  */
 
 const PRICE_EUR = 195;
@@ -18,7 +19,7 @@ const seedCollections: readonly Collection[] = [
     name: "Karnain Addicte",
     baseline: "La collection signature",
     description:
-      "Des parfums d’exception — les classiques que les amoureux du parfum se doivent de posséder.",
+      "Des parfums d'exception — les classiques que les amoureux du parfum se doivent de posséder.",
   },
 ];
 
@@ -32,13 +33,16 @@ const seedFragrances: readonly Fragrance[] = [
     priceEur: PRICE_EUR,
     mood: "Chaud, boisé, enveloppant.",
     description:
-      "Un tabac blond adouci d’épices et de vanille, pour un sillage chaleureux qui s’attarde.",
+      "Tobacco est un mélange délicieusement complexe de notes chaudes et fraîches. La base de tabac crée une sensation de sophistication et de mystère, tandis que la framboise ajoute une touche de fraîcheur et d'élégance.\n\nAu cœur, le cuir robuste et fumé se marie avec la profondeur aromatique du tabac, créant une ambiance chaleureuse et enveloppante. Les fleurs délicates de violette, de muguet et de rose apportent un contraste doux et floral.\n\nLe fond repose sur une base sensuelle où l'ambre et le musc s'entrelacent. La vanille douce, associée aux nuances terreuses du patchouli et de la fève tonka, ajoute une dimension addictive et chaleureuse.",
     notes: {
-      head: ["Bergamote"],
-      heart: ["Tabac blond", "Épices douces"],
-      base: ["Vanille", "Bois précieux"],
+      head: ["Framboise", "Safran", "Bergamote"],
+      heart: ["Cuir", "Tabac", "Violette", "Muguet", "Rose"],
+      base: ["Ambre", "Musc", "Vanille", "Patchouli", "Fève Tonka"],
     },
     featured: true,
+    status: "published",
+    isNew: false,
+    isBestSeller: true,
   },
   {
     slug: "cuir-90",
@@ -48,13 +52,17 @@ const seedFragrances: readonly Fragrance[] = [
     collectionSlug: "karnain-addicte",
     priceEur: PRICE_EUR,
     mood: "Cuir noble, fumé, racé.",
-    description: "Un cuir précieux relevé de safran et d’iris, signé d’une base d’oud et d’ambre.",
+    description:
+      "« Cuir 90 » est un parfum de niche audacieux, un hommage à la fusion entre le raffinement et la puissance brute. Dès l'ouverture, une framboise juteuse éclate avec une vivacité fruitée, avant de laisser place à un cœur dominé par une note de cuir intense et fumé, renforcée par la fève tonka et l'encens.\n\nEn fond, le parfum se pose sur un accord sensuel de musc enveloppant, enrichi de vanille crémeuse. L'ambre ajoute une touche de chaleur dorée, tandis que le bois de cèdre structure l'ensemble avec une élégance boisée et intemporelle.",
     notes: {
-      head: ["Safran"],
-      heart: ["Cuir", "Iris"],
-      base: ["Oud", "Ambre"],
+      head: ["Framboise"],
+      heart: ["Cuir", "Fève Tonka", "Encens"],
+      base: ["Musc", "Vanille", "Ambre", "Bois de cèdre"],
     },
     featured: true,
+    status: "published",
+    isNew: false,
+    isBestSeller: true,
   },
   {
     slug: "rose-des-iles",
@@ -64,13 +72,17 @@ const seedFragrances: readonly Fragrance[] = [
     collectionSlug: "karnain-addicte",
     priceEur: PRICE_EUR,
     mood: "Rose solaire, voyageuse.",
-    description: "Une rose de Mai lumineuse, portée par le jasmin et adoucie d’un musc poudré.",
+    description:
+      "« Rose des Îles » est un mélange équilibré de notes florales de rose et de bergamote, combiné à des notes plus profondes de musc et de vanille — parfait pour toutes les occasions.\n\nLa rose apporte une touche de fraîcheur et de sensualité, tandis que la bergamote ajoute une note citronnée qui réveille les sens. Le musc et la vanille apportent une profondeur et une chaleur à la fragrance.",
     notes: {
-      head: ["Poivre rose"],
-      heart: ["Rose de Mai", "Jasmin"],
-      base: ["Musc", "Bois de santal"],
+      head: ["Bergamote"],
+      heart: ["Rose", "Muguet"],
+      base: ["Vanille", "Musc", "Ambre"],
     },
     featured: true,
+    status: "published",
+    isNew: false,
+    isBestSeller: true,
   },
   {
     slug: "tentation",
@@ -81,13 +93,16 @@ const seedFragrances: readonly Fragrance[] = [
     priceEur: PRICE_EUR,
     mood: "Gourmand, sensuel, irrésistible.",
     description:
-      "Fleur d’oranger et praline sur un fond de vanille et de fève tonka — une gourmandise.",
+      "« Tentation » est une véritable gourmandise olfactive, un parfum qui séduit par son audace sucrée et sa profondeur sensuelle. Dès les premières notes, une fraise éclatante se mêle à la richesse sombre du cacao.\n\nAu cœur, le parfum s'intensifie avec des accords de chocolat fondant et de barbe à papa, un mélange sucré et nostalgique. En fond, une base crémeuse de vanille douce, renforcée par un musc sensuel et une touche ambrée.",
     notes: {
-      head: ["Mandarine"],
-      heart: ["Fleur d’oranger", "Praline"],
-      base: ["Vanille", "Fève tonka"],
+      head: ["Fraise", "Cacao"],
+      heart: ["Chocolat", "Barbe à papa", "Sucré"],
+      base: ["Vanille", "Musc", "Ambre"],
     },
     featured: true,
+    status: "published",
+    isNew: false,
+    isBestSeller: true,
   },
   {
     slug: "sucre-addictee",
@@ -97,13 +112,17 @@ const seedFragrances: readonly Fragrance[] = [
     collectionSlug: "karnain-addicte",
     priceEur: PRICE_EUR,
     mood: "Sucré, addictif, lumineux.",
-    description: "Un cœur de caramel et de fleurs blanches, addictif comme une note d’enfance.",
+    description:
+      "« Sucre Addictée » est une explosion de gourmandise pure. Dès les premières notes, une barbe à papa aérienne se mêle à la pomme d'amour croquante, rappelant les douceurs de l'enfance.\n\nAu cœur, la gourmandise devient plus intense avec un accord de sucre noir et de caramel fondant, relevé d'une touche d'anis. Le fond est dominé par la vanille crémeuse et une base ambrée chaude et réconfortante.",
     notes: {
-      head: ["Fruits rouges"],
-      heart: ["Caramel", "Fleurs blanches"],
-      base: ["Vanille", "Musc"],
+      head: ["Barbe à papa", "Pomme d'amour"],
+      heart: ["Sucre noir", "Caramel", "Anis"],
+      base: ["Vanille", "Ambre"],
     },
     featured: false,
+    status: "published",
+    isNew: true,
+    isBestSeller: false,
   },
   {
     slug: "rose-des-bois",
@@ -120,22 +139,29 @@ const seedFragrances: readonly Fragrance[] = [
       base: ["Cèdre", "Patchouli"],
     },
     featured: false,
+    status: "published",
+    isNew: true,
+    isBestSeller: false,
   },
   {
     slug: "cherry-je-taime",
     family: "Gourmands",
-    name: "Cherry Je t’aime",
+    name: "Cherry Je t'aime",
     images: ["/images/fragrances/cherry-je-taime-1.png"],
     collectionSlug: "karnain-addicte",
     priceEur: PRICE_EUR,
     mood: "Cerise pétillante, audacieuse.",
-    description: "La cerise gourmande rencontre l’amande et la rose, sur un fond tonka et vanille.",
+    description:
+      "« Cherry, Je t'aime » est une fragrance vibrante où les fruits rouges rencontrent des épices et des bois précieux. L'ouverture est éclatante avec un mélange juteux de cassis et de framboise, dynamisé par la bergamote et le safran.\n\nAu cœur, la cerise pulpeuse s'entrelace avec la fève tonka et l'amande, créant un accord gourmand et addictif, rehaussé de rose et de jasmin. En fond, l'ambre chaud, le musc et les bois de gaïac, vétiver et santal forment une base luxueuse, adoucie par la vanille.",
     notes: {
-      head: ["Cerise"],
-      heart: ["Amande", "Rose"],
-      base: ["Fève tonka", "Vanille"],
+      head: ["Cassis", "Framboise", "Safran", "Bergamote"],
+      heart: ["Fève Tonka", "Cerise", "Amande", "Patchouli", "Rose", "Jasmin"],
+      base: ["Ambre", "Musc", "Vétiver", "Bois de gaïac", "Santal", "Vanille"],
     },
     featured: false,
+    status: "published",
+    isNew: true,
+    isBestSeller: false,
   },
 ];
 

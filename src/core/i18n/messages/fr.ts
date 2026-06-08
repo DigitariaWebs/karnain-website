@@ -46,6 +46,11 @@ export const fr = {
     filterAll: "Tout",
   },
 
+  badges: {
+    new: "Nouveau",
+    bestSeller: "Best-seller",
+  },
+
   story: {
     eyebrow: "La maison",
     title: "L’art du parfum",
