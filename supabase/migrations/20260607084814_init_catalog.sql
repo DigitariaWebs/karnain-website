@@ -1,7 +1,7 @@
 -- Karnain catalog schema: collections + fragrances.
--- RLS enabled on both: public read (anon + authenticated), admin (authenticated) write.
--- Authenticated == admin: there is no public sign-up; admin users are created in the
--- Supabase dashboard.
+-- RLS enabled on both: public read (anon + authenticated); write restricted to admins,
+-- identified by an `app_metadata.role = 'admin'` JWT claim (set on admin users in the
+-- Supabase dashboard). This is independent of the project's sign-up setting.
 
 create table if not exists public.collections (
   slug text primary key,
@@ -37,12 +37,16 @@ alter table public.fragrances enable row level security;
 create policy "collections public read"
   on public.collections for select to anon, authenticated using (true);
 create policy "collections admin write"
-  on public.collections for all to authenticated using (true) with check (true);
+  on public.collections for all to authenticated
+  using ((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin')
+  with check ((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin');
 
 create policy "fragrances public read"
   on public.fragrances for select to anon, authenticated using (true);
 create policy "fragrances admin write"
-  on public.fragrances for all to authenticated using (true) with check (true);
+  on public.fragrances for all to authenticated
+  using ((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin')
+  with check ((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin');
 
 -- Data API grants (RLS still governs which rows are visible/writable).
 grant select on public.collections, public.fragrances to anon, authenticated;

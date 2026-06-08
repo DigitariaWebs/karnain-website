@@ -30,10 +30,13 @@ sign-up) to create, edit, and delete fragrances. Visitors never see admin UI.
   hiccup (repo returns `null` → seed). See ADR-0005.
 - 2026-06-07: `price_eur` is `integer` (whole euros) so Supabase returns a number, not a
   numeric string (which would fail zod and silently fall back).
-- 2026-06-07: authenticated == admin (no public sign-up); create admin users in the Supabase
-  dashboard. Only the URL + publishable key reach the browser; service-role key stays server.
-- TODO(client): provide `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`,
-  run the migration, create an admin user.
+- 2026-06-07: write access is gated by RLS on an **`app_metadata.role = 'admin'` JWT claim**
+  (not merely being authenticated — robust even if project sign-up is enabled). Set the claim
+  on admin users in the Supabase dashboard. Only the URL + publishable key reach the browser;
+  service-role key stays server.
+- 2026-06-07: **Connected** — `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+  are set in Vercel; the catalog migration is applied (1 collection, 7 fragrances). Remaining:
+  create an admin user with the `admin` role to use `/admin`.
 
 ## CUJs covered
 

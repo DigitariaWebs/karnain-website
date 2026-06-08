@@ -63,9 +63,8 @@ Design tokens (color, type, spacing) live in `src/app/globals.css` per
   payment step is a later, spec-gated decision pending payment + legal/CGV. Until then the
   cart page presents the order and a clear “coming soon” for online payment.
 - **Bag is a guest bag**, persisted locally (no customer login to shop).
-- **Data layer: Supabase.** Perfumes and collections read from Supabase when configured,
-  else an in-code seed — scaffolded in spec 005 with a graceful fallback (no keys required
-  yet). See ADR-0005.
+- **Data layer: Supabase.** Live — perfumes and collections read from the Karnain Supabase
+  project; the in-code seed is the fallback when env is absent (e.g. local/CI). See ADR-0005.
 - **Auth: admin-side only.** An authenticated admin manages the catalog at `/admin`
   (Supabase Auth, no public sign-up); visitors are never asked to sign in.
 - **i18n: French only, i18n-ready.** Ship `fr` as the sole locale on i18n foundations so
