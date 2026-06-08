@@ -52,6 +52,16 @@ sign-up) to create, edit, and delete fragrances. Visitors never see admin UI.
   from the old WooCommerce site). Old-site has 3 draft-only products (Mon Chéri, Nuit
   Parisienne, and Rose des Bois is a draft there) — not yet added here; tracked in spec 009.
 
+## Image upload (spec 010)
+
+- Photos upload to a public Supabase Storage bucket **`product-images`**; RLS allows public read
+  but **admin-only write** (`app_metadata.role = 'admin'`). The admin form's `ImageUploader`
+  (client) uploads via the browser Supabase client and stores the public URLs in
+  `fragrances.images`; the first image is primary. `next.config` `remotePatterns` lets
+  `next/image` serve Storage URLs (repo `/images/...` paths still work).
+- Removing a thumbnail drops it from the list but does not delete the Storage object (orphan
+  cleanup is a later concern). Verified live end-to-end (admin upload, public read, anon denied).
+
 ## CUJs covered
 
 - No public CUJ (admin is internal). Public CUJs A/B/C are unaffected by the route-group move.
