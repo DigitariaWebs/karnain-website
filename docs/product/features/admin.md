@@ -35,8 +35,11 @@ sign-up) to create, edit, and delete fragrances. Visitors never see admin UI.
   on admin users in the Supabase dashboard. Only the URL + publishable key reach the browser;
   service-role key stays server.
 - 2026-06-07: **Connected** — `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
-  are set in Vercel; the catalog migration is applied (1 collection, 7 fragrances). Remaining:
-  create an admin user with the `admin` role to use `/admin`.
+  are set in Vercel; the catalog migration is applied (1 collection, 7 fragrances).
+- 2026-06-08: an admin user exists (`admin@karnain.fr`) with the `admin` role claim; sign in at
+  `/admin`. Credentials are not stored in the repo; rotate the password in the Supabase dashboard.
+  Note: GoTrue rejects hand‑inserted `auth.users` rows whose token columns are `NULL` (“Database
+  error querying schema”) — set `confirmation_token`/`recovery_token`/`email_change*`/etc. to `''`.
 
 ## Decisions & gotchas (spec 009)
 
