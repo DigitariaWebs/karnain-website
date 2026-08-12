@@ -10,7 +10,7 @@ export const fr = {
     closeMenu: "Fermer le menu",
     items: [
       { label: "Collection", href: "/collection" },
-      { label: "La maison", href: "/#histoire" },
+      { label: "La maison", href: "/maison" },
       { label: "Contact", href: "/#contact" },
     ],
   },
@@ -58,6 +58,44 @@ export const fr = {
       "Depuis le XVIᵉ siècle, la culture de la plante à parfum et l’art de composer se transmettent en Pays de Grasse. Karnain s’inscrit dans cet héritage, avec le goût de la mesure et de l’élégance.",
     body2:
       "Nos parfums sont composés par de grands nez, formés dans les plus grandes maisons, à partir des essences les plus nobles — matières choisies aux quatre coins du monde, sans compromis.",
+    cta: "Découvrir la maison",
+  },
+
+  /**
+   * PLACEHOLDER COPY — deliberately evocative rather than factual, so nothing
+   * here asserts a history we cannot source. Replace with Maroin’s real brand
+   * story when it arrives (see the tracked task); the page structure holds.
+   */
+  maison: {
+    eyebrow: "La maison",
+    title: "Entrer dans l’univers Karnain",
+    lede: "Karnain est née d’une conviction simple : un parfum ne se porte pas, il se raconte. Chaque fragrance de la maison est pensée comme un souvenir que l’on emporte avec soi.",
+    chapters: [
+      {
+        title: "L’origine",
+        body1:
+          "Tout commence par une obsession — celle du geste juste. Choisir une matière plutôt qu’une autre, doser à quelques gouttes près, recommencer jusqu’à ce que l’accord s’impose de lui-même.",
+        body2:
+          "La maison avance à son rythme. Peu de fragrances, longuement travaillées, plutôt qu’une collection qui s’étire. Ce que nous signons doit pouvoir se porter dix ans sans se démoder.",
+      },
+      {
+        title: "La composition",
+        body1:
+          "Nos parfums sont des extraits : une concentration élevée, une tenue longue, une évolution lente sur la peau. Les matières sont choisies pour leur caractère — une rose qui n’est pas sage, un cuir qui garde sa rudesse, une vanille qui ne bascule jamais dans le sucre facile.",
+        body2: "Rien n’est ajouté pour faire joli. Si une note ne sert pas l’accord, elle sort.",
+      },
+      {
+        title: "Le flacon",
+        body1:
+          "Un verre épais, un bouchon doré, une étiquette blanche qui laisse la fragrance parler. Le flacon Karnain est le même d’une fragrance à l’autre — seule la couleur du parfum change.",
+        body2: "C’est une famille, pas une collection d’objets.",
+      },
+    ],
+    quote: "Un parfum réussi ne se remarque pas tout de suite. Il se reconnaît.",
+    closingTitle: "Trouver la vôtre",
+    closingBody:
+      "Sept fragrances, sept caractères. La plus juste est rarement celle que l’on croit — prenez le temps de les découvrir.",
+    closingCta: "Découvrir la collection",
   },
 
   campaign: {

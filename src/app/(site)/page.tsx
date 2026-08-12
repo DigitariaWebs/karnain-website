@@ -105,6 +105,12 @@ export default async function HomePage() {
           <Reveal className="text-muted-foreground space-y-4 text-base leading-relaxed">
             <p>{dict.story.body1}</p>
             <p>{dict.story.body2}</p>
+            <Link
+              href="/maison"
+              className={cn(buttonVariants({ variant: "outline" }), "label-eyebrow mt-2 gap-2")}
+            >
+              {dict.story.cta}
+            </Link>
           </Reveal>
         </Container>
       </section>
