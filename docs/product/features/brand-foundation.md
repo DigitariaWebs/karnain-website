@@ -1,6 +1,6 @@
 # Brand foundation & homepage
 
-**Status:** live · **Slice:** src/features/catalog (+ shared shell, design tokens) · **Routes:** /
+**Status:** live · **Slice:** src/features/catalog (+ shared shell, design tokens) · **Routes:** /, /maison
 **Spec history:** specs/001-brand-foundation-homepage (active 2026-06-07)
 
 ## What it does (user terms)
@@ -43,6 +43,13 @@ No checkout, no customer login — purchase converts through inquiry.
   still. A gradient scrim (`from-black/75…`) plus text-shadow on the headline guarantees
   contrast over the light scene. The 3D source (`3d-showcase/`) is git-ignored; only the
   exported web assets are committed.
+- 2026-08-12 (client feedback): the brand story now has its own page at **`/maison`**
+  (`app/(site)/maison/page.tsx`) — Maroin asked for “une page en mettant l’histoire de la
+  marque, pour faire rentrer les gens dans l’univers de la marque”. Nav “La maison” points
+  there (was `/#histoire`); the homepage `#histoire` section stays as a teaser with a
+  “Découvrir la maison” link. **The copy in `dict.maison` is deliberate placeholder** —
+  evocative, asserting no sourceable history — pending the client’s real brand story. The
+  pre-existing `dict.story` copy (Grasse, XVIᵉ siècle) is likewise unverified.
 - 2026-06-07 (spec 004): the homepage also carries a full-bleed **campaign band**
   (`public/images/campaign.png`) and an **Instagram strip** (`public/images/ig-1…4.png`,
   linking to `site.instagramUrl`). Below-the-fold imagery is lazy `next/image` — expected,

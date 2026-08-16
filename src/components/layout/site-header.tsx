@@ -16,7 +16,7 @@ export function SiteHeader({ bag }: SiteHeaderProps) {
   const contactHref = emailLink(dict.contact.emailSubject);
 
   return (
-    <header className="bg-background/85 sticky top-0 z-40 border-b backdrop-blur">
+    <header data-site-header className="bg-background/85 sticky top-0 z-40 border-b backdrop-blur">
       <Container className="grid h-16 grid-cols-[1fr_auto_1fr] items-center md:h-20">
         <div className="flex items-center justify-start">
           <nav aria-label={site.name} className="hidden items-center gap-8 md:flex">

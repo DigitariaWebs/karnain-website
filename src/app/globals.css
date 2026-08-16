@@ -118,6 +118,42 @@
 }
 
 @layer utilities {
+  /*
+   * Pages that open on the full-bleed hero let the header float over it: transparent at rest,
+   * settling into the solid bar once the visitor scrolls away.
+   *
+   * The "is this a hero page?" half is done with :has() rather than React state so the right
+   * header is painted on the very first frame — state would flash the solid bar and then swap.
+   * Only the scroll half needs JavaScript (see components/layout/scroll-flag.tsx).
+   *
+   * This lives in the utilities layer on purpose: the header carries Tailwind's own
+   * `bg-background/85`, and later cascade layers beat earlier ones regardless of specificity,
+   * so the same rules from @layer components would silently lose.
+   */
+  [data-site-header] {
+    transition:
+      background-color 400ms ease,
+      border-color 400ms ease,
+      backdrop-filter 400ms ease;
+  }
+  body:has([data-hero-overlay]) [data-site-header] {
+    background-color: transparent;
+    border-bottom-color: transparent;
+    backdrop-filter: none;
+  }
+  html[data-scrolled] body:has([data-hero-overlay]) [data-site-header] {
+    background-color: color-mix(in oklab, var(--color-background) 88%, transparent);
+    border-bottom-color: var(--color-border);
+    backdrop-filter: blur(8px);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-site-header] {
+      transition: none;
+    }
+  }
+}
+
+@layer utilities {
   /* Letter-spaced uppercase micro-label (nav, eyebrows, badges). */
   .label-eyebrow {
     font-family: var(--font-sans);
