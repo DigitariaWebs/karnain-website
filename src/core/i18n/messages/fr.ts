@@ -15,6 +15,14 @@ export const fr = {
     ],
   },
 
+  heroCarousel: {
+    carousel: "Nos parfums signature",
+    eyebrow: "Extrait de parfum",
+    previous: "Parfum précédent",
+    next: "Parfum suivant",
+    discover: "Découvrir",
+  },
+
   hero: {
     eyebrow: "Maison de parfum · France",
     statement: "L’art du parfum, à la française.",

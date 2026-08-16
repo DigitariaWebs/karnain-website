@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/layout/container";
-import { HeroBackground } from "@/components/layout/hero-background";
 import { Reveal } from "@/components/motion";
 import { buttonVariants } from "@/components/ui/button";
 import { InstagramIcon, MailIcon, PhoneIcon } from "@/components/ui/icons";
@@ -13,6 +12,7 @@ import {
   getFeaturedFragrances,
   getFragrances,
 } from "@/features/catalog";
+import { HeroCarousel } from "@/features/hero-carousel";
 import { cn } from "@/lib/utils";
 
 const ctaPrimary = cn(buttonVariants({ size: "lg" }), "label-eyebrow h-12 gap-2 px-8");
@@ -23,8 +23,6 @@ const ctaSecondary = cn(
 const heading = "font-serif text-4xl font-light md:text-5xl";
 const heroPrimary =
   "label-eyebrow bg-background text-foreground hover:bg-background/90 inline-flex h-12 items-center justify-center gap-2 rounded-md px-8 transition-colors";
-const heroSecondary =
-  "label-eyebrow border-background/50 text-background hover:bg-background/10 inline-flex h-12 items-center justify-center gap-2 rounded-md border px-8 transition-colors";
 
 export default async function HomePage() {
   const dict = getDictionary();
@@ -34,36 +32,18 @@ export default async function HomePage() {
     getCollection("karnain-addicte"),
   ]);
 
+  // The hero owns which bottles it can show (it has 3D for five of them); the catalog owns the
+  // words. Composing the two here is what keeps the slices independent.
+  const heroItems = all.map((fragrance) => ({
+    slug: fragrance.slug,
+    name: fragrance.name,
+    mood: fragrance.mood,
+    href: `/parfums/${fragrance.slug}`,
+  }));
+
   return (
     <>
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0">
-          <HeroBackground videoSrc="/video/hero.mp4" poster="/images/hero-poster.png" />
-          {/* Contrast scrim — keeps the headline legible over the light 3D scene. */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/40 to-black/55" />
-        </div>
-        <Container className="relative flex min-h-[82vh] flex-col items-center justify-center gap-6 py-24 text-center">
-          <Reveal className="flex flex-col items-center gap-6">
-            <p className="label-eyebrow text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
-              {dict.hero.eyebrow}
-            </p>
-            <h1 className="max-w-3xl font-serif text-5xl leading-[1.05] font-light text-balance text-white [text-shadow:0_2px_28px_rgba(0,0,0,0.55)] md:text-7xl">
-              {dict.hero.statement}
-            </h1>
-            <p className="max-w-xl text-base text-white/90 [text-shadow:0_1px_16px_rgba(0,0,0,0.5)] md:text-lg">
-              {dict.hero.lede}
-            </p>
-            <div className="mt-2 flex flex-col items-center gap-3 sm:flex-row">
-              <Link href="/collection" className={heroPrimary}>
-                {dict.hero.primaryCta}
-              </Link>
-              <Link href="#contact" className={heroSecondary}>
-                {dict.hero.secondaryCta}
-              </Link>
-            </div>
-          </Reveal>
-        </Container>
-      </section>
+      <HeroCarousel items={heroItems} labels={dict.heroCarousel} />
 
       <section className="py-20 md:py-28">
         <Container>

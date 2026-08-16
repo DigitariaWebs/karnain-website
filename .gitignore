@@ -25,6 +25,10 @@ next-env.d.ts
 # generated artifacts (screenshots, traces, reference captures)
 /artifacts/
 
+# 3D working directory: Blender exports, test renders, one-off scripts. Anything the site
+# actually serves is copied into public/ — this is the cutting-room floor.
+/scratch/
+
 # env files (never commit secrets; .env.example is tracked)
 .env
 .env.*
