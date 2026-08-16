@@ -1,6 +1,6 @@
 import "server-only";
 import { z } from "zod";
-import { createSupabaseServerClient } from "@/core/supabase/server";
+import { createSupabasePublicClient } from "@/core/supabase/server";
 import type { Collection, Fragrance } from "./types";
 
 /**
@@ -62,7 +62,7 @@ function toFragrance(row: z.infer<typeof fragranceRowSchema>): Fragrance {
 
 export async function fetchFragrances(): Promise<readonly Fragrance[] | null> {
   try {
-    const supabase = await createSupabaseServerClient();
+    const supabase = createSupabasePublicClient();
     const { data, error } = await supabase.from("fragrances").select("*").order("sort_order");
     if (error || !data) return null;
     const parsed = z.array(fragranceRowSchema).safeParse(data);
@@ -75,7 +75,7 @@ export async function fetchFragrances(): Promise<readonly Fragrance[] | null> {
 
 export async function fetchCollections(): Promise<readonly Collection[] | null> {
   try {
-    const supabase = await createSupabaseServerClient();
+    const supabase = createSupabasePublicClient();
     const { data, error } = await supabase.from("collections").select("*").order("sort_order");
     if (error || !data) return null;
     const parsed = z.array(collectionRowSchema).safeParse(data);

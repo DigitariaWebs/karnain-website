@@ -24,6 +24,10 @@ const heading = "font-serif text-4xl font-light md:text-5xl";
 const heroPrimary =
   "label-eyebrow bg-background text-foreground hover:bg-background/90 inline-flex h-12 items-center justify-center gap-2 rounded-md px-8 transition-colors";
 
+// Catalog data is read with a sessionless Supabase client (no per-request cookies), so this
+// page can stay statically generated; revalidate periodically to pick up admin edits.
+export const revalidate = 300;
+
 export default async function HomePage() {
   const dict = getDictionary();
   const [featured, all, collection] = await Promise.all([

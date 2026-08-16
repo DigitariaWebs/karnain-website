@@ -31,3 +31,20 @@ export async function createSupabaseServerClient() {
     },
   });
 }
+
+/**
+ * Sessionless Supabase client for anonymous public reads (catalog, collections). RLS still
+ * applies with the publishable key, so drafts stay hidden — only admin-session awareness is
+ * dropped. Calling `next/headers`'s `cookies()` forces a route into fully dynamic, per-request
+ * rendering; the public catalog pages don't need a session, so they use this instead to stay
+ * statically generated/ISR-cached rather than re-querying Supabase on every single visit.
+ */
+export function createSupabasePublicClient() {
+  const { url, publishableKey } = supabaseConfig;
+  if (!url || !publishableKey) {
+    throw new Error("Supabase is not configured.");
+  }
+  return createServerClient(url, publishableKey, {
+    cookies: { getAll: () => [], setAll: () => {} },
+  });
+}

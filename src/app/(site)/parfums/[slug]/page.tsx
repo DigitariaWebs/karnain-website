@@ -19,6 +19,10 @@ import { formatEur } from "@/lib/format";
 
 type Params = { slug: string };
 
+// Catalog data is read with a sessionless Supabase client (no per-request cookies), so this
+// page can stay statically generated; revalidate periodically to pick up admin edits.
+export const revalidate = 300;
+
 export async function generateStaticParams() {
   const fragrances = await getFragrances();
   return fragrances.map((fragrance) => ({ slug: fragrance.slug }));
