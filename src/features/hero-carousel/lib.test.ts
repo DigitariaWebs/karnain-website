@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { damp, isSlotVisible, shortestSlot, slotTransform, wrapIndex, yawWeights } from "./lib";
+import { damp, isSlotVisible, shortestSlot, slotTransform, wrapIndex } from "./lib";
 
 describe("shortestSlot", () => {
   it("is zero for the active bottle", () => {
@@ -52,36 +52,28 @@ describe("damp", () => {
 });
 
 describe("slotTransform", () => {
-  it("puts the active bottle centre stage, square on, sharp and at full size", () => {
+  it("puts the active bottle centre stage at full size", () => {
     const centre = slotTransform(0);
     expect(centre.x).toBe(0);
-    expect(centre.yaw).toBe(0);
     expect(centre.scale).toBe(1);
-    expect(centre.blur).toBe(0);
     expect(centre.opacity).toBe(1);
   });
 
   it("mirrors left and right", () => {
     expect(slotTransform(1).x).toBeCloseTo(-slotTransform(-1).x, 10);
-    expect(slotTransform(1).yaw).toBeCloseTo(-slotTransform(-1).yaw, 10);
     expect(slotTransform(1).scale).toBeCloseTo(slotTransform(-1).scale, 10);
   });
 
-  it("turns bottles away from centre as they leave", () => {
-    // Right of centre shows the left-turned render, and vice versa.
-    expect(slotTransform(1).yaw).toBeLessThan(0);
-    expect(slotTransform(-1).yaw).toBeGreaterThan(0);
-  });
-
-  it("holds the shoulder pose rather than over-rotating on the way out", () => {
-    expect(slotTransform(1.6).yaw).toBe(-1);
-    expect(slotTransform(-1.6).yaw).toBe(1);
-  });
-
-  it("steps back — smaller and softer — with distance, and never inverts", () => {
+  it("steps back — smaller — with distance, and never inverts", () => {
     expect(slotTransform(1).scale).toBeLessThan(slotTransform(0).scale);
-    expect(slotTransform(1).blur).toBeGreaterThan(0);
     expect(slotTransform(9).scale).toBeGreaterThan(0);
+  });
+
+  it("never defocuses or turns a bottle: distance is carried by size alone", () => {
+    for (const slot of [0, 0.5, 1, 1.5, -1]) {
+      expect(slotTransform(slot)).not.toHaveProperty("blur");
+      expect(slotTransform(slot)).not.toHaveProperty("yaw");
+    }
   });
 
   it("paints the nearest bottle last", () => {
@@ -107,28 +99,5 @@ describe("isSlotVisible", () => {
     expect(isSlotVisible(1.5)).toBe(true);
     expect(isSlotVisible(2)).toBe(false);
     expect(isSlotVisible(-2)).toBe(false);
-  });
-});
-
-describe("yawWeights", () => {
-  it("shows only the centre render when square on", () => {
-    expect(yawWeights(0)).toEqual({ left: 0, center: 1, right: 0 });
-  });
-
-  it("crossfades centre into a side render as the bottle turns", () => {
-    expect(yawWeights(-0.25)).toEqual({ left: 0.25, center: 0.75, right: 0 });
-    expect(yawWeights(0.5)).toEqual({ left: 0, center: 0.5, right: 0.5 });
-  });
-
-  it("always sums to one, so the bottle is never half-missing mid-turn", () => {
-    for (const yaw of [-1, -0.7, -0.2, 0, 0.3, 0.9, 1]) {
-      const w = yawWeights(yaw);
-      expect(w.left + w.center + w.right).toBeCloseTo(1, 10);
-    }
-  });
-
-  it("clamps beyond the shoulder pose", () => {
-    expect(yawWeights(3)).toEqual({ left: 0, center: 0, right: 1 });
-    expect(yawWeights(-3)).toEqual({ left: 1, center: 0, right: 0 });
   });
 });

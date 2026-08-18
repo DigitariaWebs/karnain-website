@@ -2,12 +2,8 @@ import type { HeroFragranceVisual } from "./types";
 
 const SPRITES = "/images/hero/sprites";
 
-function sprites(name: string) {
-  return {
-    left: `${SPRITES}/${name}_left.webp`,
-    center: `${SPRITES}/${name}_center.webp`,
-    right: `${SPRITES}/${name}_right.webp`,
-  } as const;
+function sprite(name: string) {
+  return `${SPRITES}/${name}_center.webp`;
 }
 
 /**
@@ -24,7 +20,7 @@ function sprites(name: string) {
 export const heroFragranceVisuals: readonly HeroFragranceVisual[] = [
   {
     slug: "tobacco",
-    sprites: sprites("Tobacco"),
+    sprite: sprite("Tobacco"),
     backdropTop: "#e6d5ba",
     backdropMid: "#e5d9c9",
     backdropFloor: "#e4e1de",
@@ -32,7 +28,7 @@ export const heroFragranceVisuals: readonly HeroFragranceVisual[] = [
   },
   {
     slug: "cherry-je-taime",
-    sprites: sprites("CherryJeTaime"),
+    sprite: sprite("CherryJeTaime"),
     backdropTop: "#e7c1c2",
     backdropMid: "#e5cdce",
     backdropFloor: "#e4dfdf",
@@ -40,7 +36,7 @@ export const heroFragranceVisuals: readonly HeroFragranceVisual[] = [
   },
   {
     slug: "rose-des-iles",
-    sprites: sprites("RoseDesIles"),
+    sprite: sprite("RoseDesIles"),
     backdropTop: "#e3d8dc",
     backdropMid: "#e3dbde",
     backdropFloor: "#e4e1e2",
@@ -48,7 +44,7 @@ export const heroFragranceVisuals: readonly HeroFragranceVisual[] = [
   },
   {
     slug: "cuir-90",
-    sprites: sprites("Cuir90"),
+    sprite: sprite("Cuir90"),
     backdropTop: "#e4c7af",
     backdropMid: "#e2d1c5",
     backdropFloor: "#e3e0dd",
@@ -56,7 +52,7 @@ export const heroFragranceVisuals: readonly HeroFragranceVisual[] = [
   },
   {
     slug: "tentation",
-    sprites: sprites("Tentation"),
+    sprite: sprite("Tentation"),
     backdropTop: "#e5dcc1",
     backdropMid: "#e5decd",
     backdropFloor: "#e4e2de",

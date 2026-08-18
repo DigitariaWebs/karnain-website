@@ -3,14 +3,12 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef } from "react";
 import { heroFragranceVisuals } from "../data";
-import { damp, isSlotVisible, shortestSlot, slotTransform, yawWeights } from "../lib";
+import { damp, isSlotVisible, shortestSlot, slotTransform } from "../lib";
 import { useHeroCarouselStoreApi } from "../provider";
 import type { HeroFragranceVisual } from "../types";
 
 /** Decay rate of the travel easing — decisive but weighted; the same curve the backdrop uses. */
 const TRAVEL_LAMBDA = 3.4;
-/** The turn lags the travel slightly, so a bottle leans into the move and settles after it. */
-const YAW_LAMBDA = 2.6;
 /** Idle life: a slow ±1.2° sway over eight seconds, so a still hero is never quite still. */
 const IDLE_SWAY_DEG = 1.2;
 const IDLE_PERIOD_S = 8;
@@ -22,15 +20,15 @@ const PARALLAX_PX = 10;
 const PARALLAX_LAMBDA = 2.2;
 
 type HeroStageProps = {
-  /** Set once the sprites for the opening bottle have decoded — hands the frame over from the poster. */
+  /** Set once the sprite for the opening bottle has decoded — hands the frame over from the poster. */
   onReady: () => void;
 };
 
 /**
- * The turntable. Every bottle is three stacked, pre-rendered yaws of the same Cycles image;
- * the frame loop moves them, blends the yaws, and softens the ones that have stepped back —
- * writing to `style` directly, so advancing the carousel costs React one render for the copy
- * and nothing per frame.
+ * The turntable. Every bottle is the same pre-rendered Cycles image, square to camera; the frame
+ * loop only moves them across the stage and steps them back with distance — no turning, no
+ * defocus — writing to `style` directly, so advancing the carousel costs React one render for
+ * the copy and nothing per frame.
  */
 export function HeroStage({ onReady }: HeroStageProps) {
   const storeApi = useHeroCarouselStoreApi();
@@ -56,7 +54,6 @@ export function HeroStage({ onReady }: HeroStageProps) {
     const slots = heroFragranceVisuals.map((_, index) =>
       shortestSlot(index, storeApi.getState().activeIndex, count),
     );
-    const yaws = slots.map((slot) => slotTransform(slot).yaw);
     let intro = 0;
     let parallaxX = 0;
     let parallaxY = 0;
@@ -113,9 +110,6 @@ export function HeroStage({ onReady }: HeroStageProps) {
         node.style.visibility = "visible";
 
         const t = slotTransform(slot);
-        // Rotation trails the position by design — the lean is what gives the bottle weight.
-        const yaw = damp(yaws[index] ?? t.yaw, t.yaw, YAW_LAMBDA, dt);
-        yaws[index] = yaw;
         const centred = Math.max(0, 1 - Math.abs(slot));
         const rise = -INTRO_RISE * (1 - intro);
 
@@ -124,15 +118,7 @@ export function HeroStage({ onReady }: HeroStageProps) {
           `calc(${(rise * 100).toFixed(3)}% + ${(parallaxY * centred).toFixed(2)}px), 0) ` +
           `scale(${t.scale.toFixed(4)}) rotate(${(idle * centred).toFixed(3)}deg)`;
         node.style.opacity = String(Math.min(t.opacity, intro));
-        node.style.filter = t.blur > 0.05 ? `blur(${t.blur.toFixed(2)}px)` : "none";
         node.style.zIndex = String(t.zIndex);
-
-        const w = yawWeights(yaw);
-        const layers = node.querySelectorAll<HTMLElement>("[data-yaw]");
-        for (const layer of layers) {
-          const key = layer.dataset.yaw as "left" | "center" | "right";
-          layer.style.opacity = String(w[key]);
-        }
       }
       frame = requestAnimationFrame(tick);
     };
@@ -178,8 +164,8 @@ type BottleSpriteProps = {
 };
 
 /**
- * One bottle: its three yaws stacked and blended, on a soft tinted floor shadow. The shadow is
- * a separate element so it can stay on the floor while the bottle above it rises in.
+ * One bottle, face-on, on a soft tinted floor shadow. The shadow is a separate element so it can
+ * stay on the floor while the bottle above it rises in.
  */
 function BottleSprite({ ref, visual, priority, onFirstLoad }: BottleSpriteProps) {
   return (
@@ -195,21 +181,16 @@ function BottleSprite({ ref, visual, priority, onFirstLoad }: BottleSpriteProps)
           background: `radial-gradient(ellipse at center, ${visual.shadowColor} 0%, transparent 70%)`,
         }}
       />
-      {(["left", "center", "right"] as const).map((yaw) => (
-        <Image
-          key={yaw}
-          data-yaw={yaw}
-          src={visual.sprites[yaw]}
-          alt=""
-          fill
-          priority={priority}
-          sizes="(min-width: 1280px) 34vh, (min-width: 768px) 30vh, 52vw"
-          className="object-contain object-bottom select-none"
-          draggable={false}
-          style={{ opacity: yaw === "center" ? 1 : 0 }}
-          onLoad={yaw === "center" ? onFirstLoad : undefined}
-        />
-      ))}
+      <Image
+        src={visual.sprite}
+        alt=""
+        fill
+        priority={priority}
+        sizes="(min-width: 1280px) 34vh, (min-width: 768px) 30vh, 52vw"
+        className="object-contain object-bottom select-none"
+        draggable={false}
+        onLoad={onFirstLoad}
+      />
     </div>
   );
 }

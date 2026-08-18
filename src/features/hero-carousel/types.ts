@@ -8,15 +8,11 @@ export type HeroFragranceVisual = {
   /** Catalog slug — the join key between this slice and the catalog's data. */
   readonly slug: string;
   /**
-   * The bottle, path-traced in Blender on a transparent background, at three yaws. `center` is
-   * square to camera; `left`/`right` are turned ~24° so a bottle standing on a shoulder of the
-   * stage reads as turned away, and one in flight can rotate through the three as it travels.
+   * The bottle, path-traced in Blender on a transparent background, square to camera. One pose
+   * only: the carousel moves bottles across the stage without ever turning them, so every
+   * fragrance is always presented face-on — the same way it is photographed for the shelf.
    */
-  readonly sprites: {
-    readonly left: string;
-    readonly center: string;
-    readonly right: string;
-  };
+  readonly sprite: string;
   /** Backdrop sweep, sampled from the same Cycles renders so the CSS matches the offline look. */
   readonly backdropTop: string;
   readonly backdropMid: string;
@@ -52,10 +48,6 @@ export type SlotTransform = {
   readonly x: number;
   /** Apparent depth: 1 at centre stage, shrinking toward the shoulders. */
   readonly scale: number;
-  /** Which pre-rendered yaw to show, and how far to blend toward it: -1 left … 0 centre … 1 right. */
-  readonly yaw: number;
-  /** Depth-of-field stand-in: blur radius in px, 0 at centre stage. */
-  readonly blur: number;
   readonly opacity: number;
   /** Stacking: the nearest bottle paints last. */
   readonly zIndex: number;

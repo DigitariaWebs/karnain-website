@@ -12,7 +12,7 @@ type HeroPosterProps = {
  * The still stand-in for the moving stage: shown for the instant before the opening bottle
  * has decoded, and permanently when the visitor asks for reduced motion.
  *
- * It uses the very same centre-yaw sprite, in the very same box, as the stage does — so the
+ * It uses the very same sprite, in the very same box, as the stage does — so the
  * hand-off from still to moving is invisible, and reduced-motion visitors get the identical
  * photograph, only without the turntable.
  */
@@ -35,7 +35,7 @@ export function HeroPoster({ activeIndex, alt }: HeroPosterProps) {
             }}
           />
           <Image
-            src={visual.sprites.center}
+            src={visual.sprite}
             alt={index === activeIndex ? alt : ""}
             fill
             priority={index === 0}
