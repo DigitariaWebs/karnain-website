@@ -31,8 +31,8 @@ export function orderItems(items: readonly HeroCarouselItem[]): HeroCarouselItem
 }
 
 /**
- * The full-bleed hero: a turntable of path-traced bottles over a gradient that follows the
- * perfume. The bottles are the real Cycles renders; only the motion is live.
+ * The full-bleed hero: a turntable of photoreal bottle cutouts over a gradient that follows the
+ * perfume. Every fragrance shares one studio treatment; only the liquid and label change.
  */
 export function HeroCarousel({ items, labels }: HeroCarouselProps) {
   const ordered = useMemo(() => orderItems(items), [items]);

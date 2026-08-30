@@ -29,6 +29,7 @@ function Panel({
   comingSoonLabel?: string;
 }) {
   if (image.src) {
+    const sizes = big ? "(min-width: 768px) 45vw, 100vw" : "120px";
     return (
       <div className={cn("relative overflow-hidden rounded-md", !contain && "border", className)}>
         <Image
@@ -36,7 +37,7 @@ function Panel({
           alt={image.alt}
           fill
           priority={priority}
-          sizes={big ? "(min-width: 768px) 45vw, 100vw" : "120px"}
+          sizes={sizes}
           className={contain ? "object-contain" : "object-cover"}
         />
       </div>

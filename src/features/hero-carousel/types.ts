@@ -8,12 +8,12 @@ export type HeroFragranceVisual = {
   /** Catalog slug — the join key between this slice and the catalog's data. */
   readonly slug: string;
   /**
-   * The bottle, path-traced in Blender on a transparent background, square to camera. One pose
-   * only: the carousel moves bottles across the stage without ever turning them, so every
-   * fragrance is always presented face-on — the same way it is photographed for the shelf.
+   * A transparent, front-facing studio cutout of the bottle. One pose only: the carousel moves
+   * bottles across the stage without ever turning them, so every fragrance is always presented
+   * face-on — the same way it is photographed for the shelf.
    */
   readonly sprite: string;
-  /** Backdrop sweep, sampled from the same Cycles renders so the CSS matches the offline look. */
+  /** Backdrop sweep tuned to the liquid colour so the cutout feels grounded in the scene. */
   readonly backdropTop: string;
   readonly backdropMid: string;
   readonly backdropFloor: string;

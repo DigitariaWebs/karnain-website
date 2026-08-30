@@ -25,8 +25,8 @@ type HeroStageProps = {
 };
 
 /**
- * The turntable. Every bottle is the same pre-rendered Cycles image, square to camera; the frame
- * loop only moves them across the stage and steps them back with distance — no turning, no
+ * The turntable. Every bottle is the same front-facing studio composition; the frame loop only
+ * moves them across the stage and steps them back with distance — no turning, no
  * defocus — writing to `style` directly, so advancing the carousel costs React one render for
  * the copy and nothing per frame.
  */

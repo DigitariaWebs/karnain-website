@@ -36,8 +36,8 @@ export default async function HomePage() {
     getCollection("karnain-addicte"),
   ]);
 
-  // The hero owns which bottles it can show (it has 3D for five of them); the catalog owns the
-  // words. Composing the two here is what keeps the slices independent.
+  // The hero owns the approved product cutouts; the catalog owns the words. Composing the two
+  // here is what keeps the slices independent.
   const heroItems = all.map((fragrance) => ({
     slug: fragrance.slug,
     name: fragrance.name,

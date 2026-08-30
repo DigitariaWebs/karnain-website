@@ -37,6 +37,17 @@ No checkout, no customer login — purchase converts through inquiry.
 
 ## Decisions & gotchas
 
+- 2026-08-30: the homepage hero is a six-fragrance carousel using transparent, photoreal studio
+  bottle cutouts in `public/images/hero/sprites/*_center-imagegen.webp`. Every bottle keeps the
+  approved 86% fill level, matching studio light, material imperfections, and exterior droplets;
+  only the liquid colour and label change. The previous Blender sprites remain alongside them as
+  recoverable source assets.
+- 2026-08-30: collection cards and product galleries use a matched set of six finished studio
+  photographs in `public/images/fragrances/*-studio-v3.png`. Bottle geometry, labels, liquid
+  colours, 86% fill lines, and droplets remain locked; a broad front-left softbox, restrained fill,
+  warm stone bounce, glass refraction, and grounded contact shadows provide the photographic
+  realism. Rose des Bois stays on its placeholder until an approved physical-bottle reference
+  exists.
 - 2026-06-07 (spec 007): the **hero background is a 3D product video** (`public/video/hero.mp4`,
   a 360° Tobacco-bottle render) via `HeroBackground` — autoplay/muted/loop/playsInline, with
   a poster (`public/images/hero-poster.png`) and a `prefers-reduced-motion` fallback to the

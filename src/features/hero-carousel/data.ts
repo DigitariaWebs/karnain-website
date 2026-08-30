@@ -2,17 +2,16 @@ import type { HeroFragranceVisual } from "./types";
 
 const SPRITES = "/images/hero/sprites";
 
-function sprite(name: string) {
-  return `${SPRITES}/${name}_center.webp`;
+function productCutout(name: string) {
+  return `${SPRITES}/${name}_center-imagegen.webp`;
 }
 
 /**
- * Per-fragrance look, transcribed from the Blender master scene.
+ * Per-fragrance look for the photoreal studio hero.
  *
- * The bottles are the actual Cycles renders — path-traced glass, liquid absorption, HDRI
- * lighting — cut out on transparent backgrounds. The backdrop stops were sampled pixel-for-pixel
- * from the same renders, so the composite reads as one photograph rather than a bottle pasted
- * on a gradient.
+ * Every bottle uses the same approved front-facing composition, 86% fill level, studio lighting,
+ * material imperfections, and water-droplet treatment. Only the liquid colour and physical label
+ * change between fragrances. The transparent cutouts sit over a restrained, liquid-matched sweep.
  *
  * The array order is the carousel order: it opens on Tobacco, the house signature. Fragrance
  * names and mood lines are not here on purpose — they belong to the catalog.
@@ -20,7 +19,7 @@ function sprite(name: string) {
 export const heroFragranceVisuals: readonly HeroFragranceVisual[] = [
   {
     slug: "tobacco",
-    sprite: sprite("Tobacco"),
+    sprite: productCutout("Tobacco"),
     backdropTop: "#e6d5ba",
     backdropMid: "#e5d9c9",
     backdropFloor: "#e4e1de",
@@ -28,7 +27,7 @@ export const heroFragranceVisuals: readonly HeroFragranceVisual[] = [
   },
   {
     slug: "cherry-je-taime",
-    sprite: sprite("CherryJeTaime"),
+    sprite: productCutout("CherryJeTaime"),
     backdropTop: "#e7c1c2",
     backdropMid: "#e5cdce",
     backdropFloor: "#e4dfdf",
@@ -36,7 +35,7 @@ export const heroFragranceVisuals: readonly HeroFragranceVisual[] = [
   },
   {
     slug: "rose-des-iles",
-    sprite: sprite("RoseDesIles"),
+    sprite: productCutout("RoseDesIles"),
     backdropTop: "#e3d8dc",
     backdropMid: "#e3dbde",
     backdropFloor: "#e4e1e2",
@@ -44,7 +43,7 @@ export const heroFragranceVisuals: readonly HeroFragranceVisual[] = [
   },
   {
     slug: "cuir-90",
-    sprite: sprite("Cuir90"),
+    sprite: productCutout("Cuir90"),
     backdropTop: "#e4c7af",
     backdropMid: "#e2d1c5",
     backdropFloor: "#e3e0dd",
@@ -52,10 +51,18 @@ export const heroFragranceVisuals: readonly HeroFragranceVisual[] = [
   },
   {
     slug: "tentation",
-    sprite: sprite("Tentation"),
+    sprite: productCutout("Tentation"),
     backdropTop: "#e5dcc1",
     backdropMid: "#e5decd",
     backdropFloor: "#e4e2de",
     shadowColor: "#8a7434",
+  },
+  {
+    slug: "sucre-addictee",
+    sprite: productCutout("SucreAddict"),
+    backdropTop: "#e4d4ad",
+    backdropMid: "#e4d9c4",
+    backdropFloor: "#e4e1dc",
+    shadowColor: "#806a2c",
   },
 ] as const;
