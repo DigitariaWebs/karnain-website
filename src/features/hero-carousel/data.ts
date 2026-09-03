@@ -3,15 +3,17 @@ import type { HeroFragranceVisual } from "./types";
 const SPRITES = "/images/hero/sprites";
 
 function productCutout(name: string) {
-  return `${SPRITES}/${name}_center-imagegen.webp`;
+  return `${SPRITES}/${name}_center-photo.webp`;
 }
 
 /**
- * Per-fragrance look for the photoreal studio hero.
+ * Per-fragrance look for the studio hero.
  *
- * Every bottle uses the same approved front-facing composition, 86% fill level, studio lighting,
- * material imperfections, and water-droplet treatment. Only the liquid colour and physical label
- * change between fragrances. The transparent cutouts sit over a restrained, liquid-matched sweep.
+ * The sprites are the client's own product photographs of the physical bottles, shot on seamless
+ * black in one session and cut to transparency: same front-facing composition, same fill level,
+ * same light, so only the liquid colour and the printed label change between fragrances. Each
+ * bottle is scaled to one common height, so the turntable never appears to resize the product.
+ * The cutouts sit over a restrained, liquid-matched sweep.
  *
  * The array order is the carousel order: it opens on Tobacco, the house signature. Fragrance
  * names and mood lines are not here on purpose — they belong to the catalog.

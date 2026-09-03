@@ -37,11 +37,16 @@ No checkout, no customer login — purchase converts through inquiry.
 
 ## Decisions & gotchas
 
-- 2026-08-30: the homepage hero is a six-fragrance carousel using transparent, photoreal studio
-  bottle cutouts in `public/images/hero/sprites/*_center-imagegen.webp`. Every bottle keeps the
-  approved 86% fill level, matching studio light, material imperfections, and exterior droplets;
-  only the liquid colour and label change. The previous Blender sprites remain alongside them as
-  recoverable source assets.
+- 2026-09-03: the hero carousel now runs on the client's **real product photographs** —
+  `public/images/hero/sprites/*_center-photo.webp`. The six bottles were shot in one session on
+  seamless black; the sprites are silhouette cutouts of those frames (edges un-premultiplied so
+  no black fringe survives on the pale sweep), each scaled to one common bottle height and seated
+  on the same baseline as the generated sprites they replace, so the stage framing, floor shadow,
+  and backdrop palette were untouched. The generated `*_center-imagegen.webp` set and the earlier
+  Blender sprites remain alongside them as recoverable source assets.
+- 2026-08-30 (superseded above for the hero): the homepage hero was a six-fragrance carousel using
+  transparent, photoreal generated bottle cutouts in
+  `public/images/hero/sprites/*_center-imagegen.webp`.
 - 2026-08-30: collection cards and product galleries use a matched set of six finished studio
   photographs in `public/images/fragrances/*-studio-v3.png`. Bottle geometry, labels, liquid
   colours, 86% fill lines, and droplets remain locked; a broad front-left softbox, restrained fill,
