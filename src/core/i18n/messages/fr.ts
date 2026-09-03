@@ -49,7 +49,7 @@ export const fr = {
   collectionPage: {
     eyebrow: "La collection",
     title: "Karnain Addicte",
-    intro: "Sept fragrances d’exception. Affinez par famille pour trouver la vôtre.",
+    intro: "Six fragrances d’exception. Affinez par famille pour trouver la vôtre.",
     filterLabel: "Filtrer",
     filterAll: "Tout",
   },
@@ -102,13 +102,13 @@ export const fr = {
     quote: "Un parfum réussi ne se remarque pas tout de suite. Il se reconnaît.",
     closingTitle: "Trouver la vôtre",
     closingBody:
-      "Sept fragrances, sept caractères. La plus juste est rarement celle que l’on croit — prenez le temps de les découvrir.",
+      "Six fragrances, six caractères. La plus juste est rarement celle que l’on croit — prenez le temps de les découvrir.",
     closingCta: "Découvrir la collection",
   },
 
   campaign: {
     eyebrow: "La maison Karnain",
-    title: "Sept fragrances d’exception. Une signature.",
+    title: "Six fragrances d’exception. Une signature.",
     cta: "Découvrir la collection",
   },
 
