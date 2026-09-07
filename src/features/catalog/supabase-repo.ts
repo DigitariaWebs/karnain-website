@@ -1,6 +1,6 @@
 import "server-only";
 import { z } from "zod";
-import { createSupabasePublicClient } from "@/core/supabase/server";
+import { createSupabasePublicClient, createSupabaseServerClient } from "@/core/supabase/server";
 import type { Collection, Fragrance } from "./types";
 
 /**
@@ -63,6 +63,24 @@ function toFragrance(row: z.infer<typeof fragranceRowSchema>): Fragrance {
 export async function fetchFragrances(): Promise<readonly Fragrance[] | null> {
   try {
     const supabase = createSupabasePublicClient();
+    const { data, error } = await supabase.from("fragrances").select("*").order("sort_order");
+    if (error || !data) return null;
+    const parsed = z.array(fragranceRowSchema).safeParse(data);
+    if (!parsed.success) return null;
+    return parsed.data.map(toFragrance);
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Catalog read **through the caller's session**, so an admin's `role` claim reaches RLS and
+ * drafts come back. The public reads above deliberately use the sessionless client to stay
+ * statically cached; the admin needs the opposite trade — per-request, and complete.
+ */
+export async function fetchFragrancesAsAdmin(): Promise<readonly Fragrance[] | null> {
+  try {
+    const supabase = await createSupabaseServerClient();
     const { data, error } = await supabase.from("fragrances").select("*").order("sort_order");
     if (error || !data) return null;
     const parsed = z.array(fragranceRowSchema).safeParse(data);

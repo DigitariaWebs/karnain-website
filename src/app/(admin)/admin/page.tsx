@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { Container } from "@/components/layout/container";
 import { buttonVariants } from "@/components/ui/button";
 import { AdminNotConfigured, ProductTable, SignOutButton, getAdminUser } from "@/features/admin";
-import { getFragrances } from "@/features/catalog";
+import { getFragrancesForAdmin } from "@/features/catalog";
 import { cn } from "@/lib/utils";
 
 export default async function AdminDashboardPage() {
@@ -11,7 +11,7 @@ export default async function AdminDashboardPage() {
   if (!session.configured) return <AdminNotConfigured />;
   if (!session.user) redirect("/admin/login");
 
-  const fragrances = await getFragrances();
+  const fragrances = await getFragrancesForAdmin();
 
   return (
     <Container className="py-12">

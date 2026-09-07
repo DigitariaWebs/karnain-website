@@ -6,8 +6,10 @@ export {
   getFamilies,
   getFeaturedFragrances,
   getFragrance,
+  getFragranceForAdmin,
   getFragrances,
   getFragrancesByCollection,
+  getFragrancesForAdmin,
 } from "./data";
 export { FragranceCard } from "./components/fragrance-card";
 export { FragranceGrid } from "./components/fragrance-grid";

@@ -168,6 +168,29 @@ export async function getFragrances(): Promise<readonly Fragrance[]> {
   return allFragrances();
 }
 
+/**
+ * Every fragrance the signed-in caller may see — drafts included for an admin, because the read
+ * goes through their session and RLS honours the `role` claim. The public selectors above read
+ * sessionlessly and therefore only ever see published rows; admin screens must use these, or a
+ * draft becomes invisible and unrecoverable from the back office.
+ */
+async function allFragrancesForAdmin(): Promise<readonly Fragrance[]> {
+  if (isSupabaseConfigured()) {
+    const { fetchFragrancesAsAdmin } = await import("./supabase-repo");
+    const rows = await fetchFragrancesAsAdmin();
+    if (rows) return rows;
+  }
+  return seedFragrances;
+}
+
+export async function getFragrancesForAdmin(): Promise<readonly Fragrance[]> {
+  return allFragrancesForAdmin();
+}
+
+export async function getFragranceForAdmin(slug: string): Promise<Fragrance | undefined> {
+  return (await allFragrancesForAdmin()).find((fragrance) => fragrance.slug === slug);
+}
+
 export async function getFeaturedFragrances(limit = 4): Promise<readonly Fragrance[]> {
   return (await allFragrances()).filter((fragrance) => fragrance.featured).slice(0, limit);
 }
