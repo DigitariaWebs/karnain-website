@@ -65,6 +65,22 @@ WhatsApp, no customer login.
   `async_payment_failed` → `cancelled`, scoped to `status = 'pending'` so a late duplicate can't
   walk a paid order backwards. Before this, abandoned checkouts sat `pending` forever and looked
   identical to one still being paid.
+- 2026-09-07: ⚠️ **`checkout.session.completed` does not mean paid.** The Stripe account
+  (`acct_1HiYqIGlrIp4MYll`, mp-parfum.fr) has **Klarna, iDEAL, Bancontact and BLIK** enabled, and
+  a delayed method completes its Session with `payment_status: "unpaid"` while funds are still in
+  flight. The old handler marked such an order `paid` — i.e. the back office would show a bottle
+  as sold and shippable before the money landed. An order now moves to `paid` only on
+  `payment_status === "paid"` or a later `async_payment_succeeded`; the buyer's details are still
+  recorded on an unpaid session so a waiting order is identifiable.
+- 2026-09-07: **Stripe is wired in TEST mode.** Webhook endpoint
+  `we_1UD0RdGlrIp4MYllsoTBrBCd` → `/api/stripe/webhook`, subscribed to the four
+  `checkout.session.*` events the handler implements. The account also serves the **live**
+  WooCommerce shop (endpoint `https://www.karnain.fr/?wc-api=wc_stripe`, both modes) — leave that
+  one alone.
+- 2026-09-07: ⚠️ `STRIPE_SECRET_KEY` in Vercel is currently the **Stripe CLI's** test key, which
+  **expires 2026-12-06**. It is fine for proving the flow, but replace it with a dashboard key
+  (or the live keys at domain cutover) before relying on it — an expired key fails checkout
+  silently, exactly like the paused-Supabase outage did.
 
 ## CUJs covered
 
