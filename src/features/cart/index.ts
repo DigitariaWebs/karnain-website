@@ -6,4 +6,5 @@ export { CartDrawer } from "./components/cart-drawer";
 export { CartView } from "./components/cart-view";
 export { CheckoutButton } from "./components/checkout-button";
 export { ClearBag } from "./components/clear-bag";
+export { normaliseBagLines, type BagLine, type IncomingItem } from "./normalise-bag";
 export type { CartItemInput, CartLine } from "./types";

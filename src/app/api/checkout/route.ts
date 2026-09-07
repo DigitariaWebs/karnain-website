@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { getStripeCredentials, isCheckoutLive } from "@/core/stripe/credentials";
+import { checkoutReturnOrigin } from "@/core/stripe/return-url";
 import { getStripe } from "@/core/stripe/server";
 import { isSupabaseConfigured } from "@/core/supabase/config";
 import { getServiceClient, hasServiceRole } from "@/core/supabase/service";
-import { getFragrance } from "@/features/catalog";
-
-type IncomingItem = { slug?: unknown; quantity?: unknown };
+import { type IncomingItem, normaliseBagLines } from "@/features/cart";
+import { getFragrances } from "@/features/catalog";
 
 /** Tells the bag whether online checkout is live, without exposing any secret. */
 export async function GET() {
@@ -31,20 +31,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "invalid-body" }, { status: 400 });
   }
 
-  const incoming = Array.isArray(body.items) ? body.items : [];
-  const lines: { slug: string; name: string; priceEur: number; quantity: number }[] = [];
-  for (const item of incoming) {
-    const quantity = Math.max(1, Math.min(99, Math.floor(Number(item?.quantity) || 1)));
-    const fragrance = await getFragrance(String(item?.slug ?? ""));
-    if (fragrance) {
-      lines.push({
-        slug: fragrance.slug,
-        name: fragrance.name,
-        priceEur: fragrance.priceEur,
-        quantity,
-      });
-    }
-  }
+  // One catalog read, then look up locally. Resolving each item separately would let a caller
+  // turn a single request into as many Supabase round-trips as it sent items.
+  const catalog = await getFragrances();
+  const bySlug = new Map(catalog.map((fragrance) => [fragrance.slug, fragrance]));
+
+  const lines = normaliseBagLines(Array.isArray(body.items) ? body.items : [], bySlug);
   if (lines.length === 0) {
     return NextResponse.json({ error: "empty-cart" }, { status: 400 });
   }
@@ -74,7 +66,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "order-failed" }, { status: 500 });
   }
 
-  const origin = new URL(request.url).origin;
+  const origin = checkoutReturnOrigin(request.url);
   const session = await getStripe(creds.secretKey).checkout.sessions.create({
     mode: "payment",
     line_items: lines.map((line) => ({

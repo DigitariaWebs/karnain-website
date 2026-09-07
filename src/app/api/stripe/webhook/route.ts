@@ -32,19 +32,33 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "bad-signature" }, { status: 400 });
   }
 
-  if (event.type === "checkout.session.completed") {
-    const session = event.data.object as Stripe.Checkout.Session;
-    const orderId = session.metadata?.order_id;
-    if (orderId) {
-      await getServiceClient()
-        .from("orders")
-        .update({
-          status: "paid",
-          email: session.customer_details?.email ?? "",
-          customer_name: session.customer_details?.name ?? "",
-        })
-        .eq("id", orderId);
-    }
+  const session = event.data.object as Stripe.Checkout.Session;
+  const orderId = session.metadata?.order_id;
+
+  if (orderId && event.type === "checkout.session.completed") {
+    await getServiceClient()
+      .from("orders")
+      .update({
+        status: "paid",
+        email: session.customer_details?.email ?? "",
+        customer_name: session.customer_details?.name ?? "",
+      })
+      .eq("id", orderId);
+  }
+
+  // A Session the buyer abandons or whose delayed payment fails would otherwise leave its order
+  // `pending` forever, indistinguishable in the back office from one still being paid. Only
+  // `pending` rows move, so a late duplicate can never walk a paid order back to cancelled.
+  if (
+    orderId &&
+    (event.type === "checkout.session.expired" ||
+      event.type === "checkout.session.async_payment_failed")
+  ) {
+    await getServiceClient()
+      .from("orders")
+      .update({ status: "cancelled" })
+      .eq("id", orderId)
+      .eq("status", "pending");
   }
 
   return NextResponse.json({ received: true });
