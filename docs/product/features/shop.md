@@ -49,6 +49,22 @@ WhatsApp, no customer login.
 - 2026-09-07: **Rose des Bois left the public catalog** (issue #2) — dropped from the seed and set
   to `draft` in Supabase, so RLS hides it from anon with no app-level filtering. All six published
   fragrances now have a real bottle photograph; the tonal placeholder no longer shows in the grid.
+- 2026-09-07: **`/api/checkout` hardened.** The bag is untrusted input, so its normalisation now
+  lives in `normaliseBagLines` (`src/features/cart`) with tests for forged prices, unknown slugs,
+  repeated slugs, a 5000-item flood and non-numeric quantities. Three fixes: the catalog is read
+  **once** per request (it used to be re-read per item, so N items cost N round-trips);
+  quantities **merge per slug**, bounding line count by catalog size (past Stripe's 100-item
+  limit the Session fails _after_ the pending order is written, orphaning rows); and
+  `success_url` no longer comes from `new URL(request.url).origin`, which reflects the `Host`
+  header — a forged Host could land a buyer on an attacker's page with a real `session_id`.
+- 2026-09-07: **`NEXT_PUBLIC_SITE_URL` is the canonical return origin** for Stripe redirects
+  (`checkoutReturnOrigin`), falling back to Vercel's production domain and only then to the
+  request. **Update it when the domain moves to karnain.fr**, or buyers keep returning to the
+  vercel.app host after paying.
+- 2026-09-07: the webhook now also handles `checkout.session.expired` and
+  `async_payment_failed` → `cancelled`, scoped to `status = 'pending'` so a late duplicate can't
+  walk a paid order backwards. Before this, abandoned checkouts sat `pending` forever and looked
+  identical to one still being paid.
 
 ## CUJs covered
 
