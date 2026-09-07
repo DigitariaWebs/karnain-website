@@ -32,7 +32,10 @@ WhatsApp, no customer login.
 ## Decisions & gotchas
 
 - 2026-06-07: Commerce model changed from inquiry/WhatsApp to **cart/bag** (LV/JPG style).
-  WhatsApp removed everywhere; contact is email + phone concierge. See `docs/product/overview.md`.
+  WhatsApp removed everywhere; contact is email only. See `docs/product/overview.md`.
+- 2026-09-07: the **“Nous appeler” CTA is gone** (issue #1) from the homepage contact section
+  and the footer, along with `site.phoneNumber`/`telLink` — the number was never more than a
+  placeholder (`+33 1 00 00 00 00`) and the brand takes enquiries by email.
 - 2026-06-08: **Checkout shipped (Stripe).** `CheckoutButton` asks `GET /api/checkout` whether
   checkout is live, then posts the bag to `/api/checkout` → Stripe Checkout Session; the webhook
   marks the order `paid`; `/commande/merci` confirms + clears the bag. Gated on config (no keys →

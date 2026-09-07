@@ -10,7 +10,6 @@ export const site = {
   url: "https://www.karnain.fr",
   // TODO(client): replace placeholders with the real channels.
   contactEmail: "contact@karnain.fr",
-  phoneNumber: "+33 1 00 00 00 00",
   instagramUrl: "https://www.instagram.com/karnain",
 } as const;
 
@@ -18,9 +17,4 @@ export const site = {
 export function emailLink(subject?: string): string {
   const base = `mailto:${site.contactEmail}`;
   return subject ? `${base}?subject=${encodeURIComponent(subject)}` : base;
-}
-
-/** Build a `tel:` link from the configured phone number. */
-export function telLink(): string {
-  return `tel:${site.phoneNumber.replace(/\s+/g, "")}`;
 }

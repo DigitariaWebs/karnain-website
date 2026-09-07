@@ -3,9 +3,9 @@ import Link from "next/link";
 import { Container } from "@/components/layout/container";
 import { Reveal } from "@/components/motion";
 import { buttonVariants } from "@/components/ui/button";
-import { InstagramIcon, MailIcon, PhoneIcon } from "@/components/ui/icons";
+import { InstagramIcon, MailIcon } from "@/components/ui/icons";
 import { getDictionary } from "@/core/i18n";
-import { emailLink, site, telLink } from "@/core/site";
+import { emailLink, site } from "@/core/site";
 import {
   FragranceGrid,
   getCollection,
@@ -16,10 +16,6 @@ import { HeroCarousel } from "@/features/hero-carousel";
 import { cn } from "@/lib/utils";
 
 const ctaPrimary = cn(buttonVariants({ size: "lg" }), "label-eyebrow h-12 gap-2 px-8");
-const ctaSecondary = cn(
-  buttonVariants({ variant: "outline", size: "lg" }),
-  "label-eyebrow h-12 gap-2 px-8",
-);
 const heading = "font-serif text-4xl font-light md:text-5xl";
 const heroPrimary =
   "label-eyebrow bg-background text-foreground hover:bg-background/90 inline-flex h-12 items-center justify-center gap-2 rounded-md px-8 transition-colors";
@@ -123,16 +119,10 @@ export default async function HomePage() {
             <p className="label-eyebrow text-muted-foreground">{dict.contact.eyebrow}</p>
             <h2 className={cn("max-w-2xl", heading)}>{dict.contact.title}</h2>
             <p className="text-muted-foreground max-w-xl">{dict.contact.body}</p>
-            <div className="mt-2 flex flex-col items-center gap-3 sm:flex-row">
-              <a href={emailLink(dict.contact.emailSubject)} className={ctaPrimary}>
-                <MailIcon className="size-4" />
-                {dict.contact.emailCta}
-              </a>
-              <a href={telLink()} className={ctaSecondary}>
-                <PhoneIcon className="size-4" />
-                {dict.contact.phoneCta}
-              </a>
-            </div>
+            <a href={emailLink(dict.contact.emailSubject)} className={cn(ctaPrimary, "mt-2")}>
+              <MailIcon className="size-4" />
+              {dict.contact.emailCta}
+            </a>
           </Reveal>
         </Container>
       </section>

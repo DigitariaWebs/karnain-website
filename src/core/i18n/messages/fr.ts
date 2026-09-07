@@ -121,10 +121,9 @@ export const fr = {
   contact: {
     eyebrow: "Contact",
     title: "Une fragrance vous appelle ?",
-    body: "Écrivez-nous ou appelez-nous — nous vous conseillons avec plaisir.",
+    body: "Écrivez-nous — nous vous conseillons avec plaisir.",
     emailCta: "Nous écrire",
     emailSubject: "Renseignement — parfums Karnain",
-    phoneCta: "Nous appeler",
   },
 
   cart: {
