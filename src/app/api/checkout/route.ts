@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import type Stripe from "stripe";
 import { getStripeCredentials, isCheckoutLive } from "@/core/stripe/credentials";
 import { checkoutReturnOrigin } from "@/core/stripe/return-url";
 import { getStripe } from "@/core/stripe/server";
@@ -67,26 +68,38 @@ export async function POST(request: Request) {
   }
 
   const origin = checkoutReturnOrigin(request.url);
-  const session = await getStripe(creds.secretKey).checkout.sessions.create({
-    mode: "payment",
-    // Everyone pays in euros. Stripe's Adaptive Pricing otherwise converts the total into the
-    // buyer's local currency (an Algerian visitor was shown "DZD 31,322.04" for a 195 € bottle),
-    // which puts the maison's pricing at the mercy of a daily FX rate and costs conversion
-    // spread. Disabled per Session rather than on the account, because the same account still
-    // serves the live WooCommerce shop and must keep its own settings.
-    adaptive_pricing: { enabled: false },
-    line_items: lines.map((line) => ({
-      quantity: line.quantity,
-      price_data: {
-        currency: "eur",
-        unit_amount: line.priceEur * 100,
-        product_data: { name: line.name },
-      },
-    })),
-    success_url: `${origin}/commande/merci?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${origin}/panier`,
-    metadata: { order_id: order.id },
-  });
+  let session: Stripe.Checkout.Session;
+  try {
+    session = await getStripe(creds.secretKey).checkout.sessions.create({
+      mode: "payment",
+      // Everyone pays in euros. Stripe's Adaptive Pricing otherwise converts the total into the
+      // buyer's local currency (an Algerian visitor was shown "DZD 31,322.04" for a 195 € bottle),
+      // which puts the maison's pricing at the mercy of a daily FX rate and costs conversion
+      // spread. Disabled per Session rather than on the account, because the same account still
+      // serves the live WooCommerce shop and must keep its own settings.
+      adaptive_pricing: { enabled: false },
+      line_items: lines.map((line) => ({
+        quantity: line.quantity,
+        price_data: {
+          currency: "eur",
+          unit_amount: line.priceEur * 100,
+          product_data: { name: line.name },
+        },
+      })),
+      success_url: `${origin}/commande/merci?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/panier`,
+      metadata: { order_id: order.id },
+    });
+  } catch {
+    // The order row is written before the Session exists, so a Stripe failure (a rotated-in bad
+    // key, an outage) would strand it: `pending` with no `stripe_session_id`, and no Session to
+    // ever expire it. Nothing was charged and none can be, so roll the attempt back rather than
+    // leaving a row the back office can't reconcile — otherwise a wrong key quietly mints one
+    // orphan per click.
+    await supabase.from("order_items").delete().eq("order_id", order.id);
+    await supabase.from("orders").delete().eq("id", order.id);
+    return NextResponse.json({ error: "stripe-failed" }, { status: 502 });
+  }
 
   await supabase.from("orders").update({ stripe_session_id: session.id }).eq("id", order.id);
 

@@ -81,6 +81,17 @@ WhatsApp, no customer login.
   **expires 2026-12-06**. It is fine for proving the flow, but replace it with a dashboard key
   (or the live keys at domain cutover) before relying on it — an expired key fails checkout
   silently, exactly like the paused-Supabase outage did.
+- 2026-09-07: **keys are best rotated from `/admin/parametres`, not env.** Verified live that
+  admin-stored settings take precedence over the Vercel variables and apply on the next request —
+  no redeploy. Blank fields keep their existing value, so one key can be rotated alone, and
+  secrets are never rendered back into the form.
+- 2026-09-07: a failed Stripe call now **rolls the order back**. The order row is written before
+  the Session exists, so a bad key or a Stripe outage used to strand it — `pending` with a null
+  `stripe_session_id`, and no Session that could ever expire it. Found by saving a deliberately
+  wrong key through the admin: every checkout click minted another unreconcilable row.
+- 2026-09-07: **Adaptive Pricing is disabled per Session** (`adaptive_pricing.enabled: false`).
+  It was quoting a 195 € bottle as "DZD 31,322.04" to a visitor in Algeria. Set in code rather
+  than on the Stripe account, because that account also serves the live WooCommerce shop.
 
 ## CUJs covered
 
