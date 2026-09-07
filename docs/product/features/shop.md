@@ -45,8 +45,10 @@ WhatsApp, no customer login.
   count is hydration-guarded so server HTML and first client render match.
 - 2026-06-08: Catalog content is the brand’s **real copy + full notes** (spec 009); descriptions
   render multi-paragraph; cards show Nouveau/Best-seller badges. Admins upload photos to Supabase
-  Storage (spec 010) — `Fragrance.images` holds repo paths and/or Storage URLs. **Sucre Addictée +
-  Rose des Bois** still have no photos (tonal placeholder) until uploaded.
+  Storage (spec 010) — `Fragrance.images` holds repo paths and/or Storage URLs.
+- 2026-09-07: **Rose des Bois left the public catalog** (issue #2) — dropped from the seed and set
+  to `draft` in Supabase, so RLS hides it from anon with no app-level filtering. All six published
+  fragrances now have a real bottle photograph; the tonal placeholder no longer shows in the grid.
 
 ## CUJs covered
 

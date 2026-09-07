@@ -51,8 +51,8 @@ No checkout, no customer login — purchase converts through inquiry.
   photographs in `public/images/fragrances/*-studio-v3.png`. Bottle geometry, labels, liquid
   colours, 86% fill lines, and droplets remain locked; a broad front-left softbox, restrained fill,
   warm stone bounce, glass refraction, and grounded contact shadows provide the photographic
-  realism. Rose des Bois stays on its placeholder until an approved physical-bottle reference
-  exists.
+  realism. Every published fragrance now has one — Rose des Bois, the last on a placeholder, was
+  drafted out of the public catalog on 2026-09-07 (issue #2) pending an approved bottle reference.
 - 2026-06-07 (spec 007): the **hero background is a 3D product video** (`public/video/hero.mp4`,
   a 360° Tobacco-bottle render) via `HeroBackground` — autoplay/muted/loop/playsInline, with
   a poster (`public/images/hero-poster.png`) and a `prefers-reduced-motion` fallback to the

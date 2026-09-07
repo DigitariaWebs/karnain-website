@@ -51,6 +51,15 @@ sign-up) to create, edit, and delete fragrances. Visitors never see admin UI.
 - 2026-06-08: the catalog now holds the **brand's real descriptions + full notes** (synced
   from the old WooCommerce site). Old-site has 3 draft-only products (Mon Chéri, Nuit
   Parisienne, and Rose des Bois is a draft there) — not yet added here; tracked in spec 009.
+- 2026-09-07: **Rose des Bois is now a draft here too** (issue #2), matching the old site —
+  migration `20260907104500_draft_rose_des_bois.sql`. It stays visible and editable in the admin;
+  only anon reads lose it.
+- 2026-09-07: ⚠️ **the Supabase project is paused.** `kjpwmhprxnltnpnmmwls.supabase.co` returns
+  NXDOMAIN (Supabase drops the API subdomain of a paused project), so `/admin` login cannot reach
+  GoTrue and every catalog read falls back to the in-code seed. The public site looks healthy
+  precisely because of the fallback-first design (ADR-0005) — the failure is silent. Restore the
+  project from the Supabase dashboard, then apply the pending migration. Free-tier projects pause
+  after ~7 days without activity, so this will recur unless the project is upgraded.
 
 ## Image upload (spec 010)
 

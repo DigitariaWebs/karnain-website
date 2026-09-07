@@ -75,12 +75,13 @@ Design tokens (color, type, spacing) live in `src/app/globals.css` per
 
 ## Current catalog (seed)
 
-Seven fragrances exist on karnain.fr today, uniform €195, grouped under the “Karnain
-Addicte” collection: Tobacco, Cuir 90, Rose des Îles, Tentation, Sucre Addictée, Rose des
-Bois, Cherry Je t’aime. Real product photography is wired in for **5 of the 7** (in
-`public/images/fragrances/`); **Sucre Addictée and Rose des Bois have no imagery yet** and
-keep the tonal placeholder until photos exist. The source asset zip lives in `public/` but
-is git-ignored — only the selected/renamed images are committed.
+Six fragrances are published on karnain.fr today, uniform €195, grouped under the “Karnain
+Addicte” collection: Tobacco, Cuir 90, Rose des Îles, Tentation, Sucre Addictée, Cherry
+Je t’aime. All six carry a real bottle photograph (in `public/images/fragrances/`), so the
+tonal placeholder no longer appears in the grid. **Rose des Bois is a draft** — it was pulled
+from the public catalog on 2026-09-07 (issue #2) because no approved bottle photograph exists;
+it stays in the admin and can be republished once one does. The source asset zip lives in
+`public/` but is git-ignored — only the selected/renamed images are committed.
 
 ## Current feature map
 

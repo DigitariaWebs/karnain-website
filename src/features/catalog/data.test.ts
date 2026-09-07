@@ -10,7 +10,7 @@ import {
 describe("catalog data", () => {
   it("exposes the full seed catalog with valid prices", async () => {
     const all = await getFragrances();
-    expect(all.length).toBe(7);
+    expect(all.length).toBe(6);
     expect(all.every((fragrance) => fragrance.priceEur > 0)).toBe(true);
     expect(new Set(all.map((fragrance) => fragrance.slug)).size).toBe(all.length);
   });
@@ -32,6 +32,6 @@ describe("catalog data", () => {
 
   it("groups fragrances by collection", async () => {
     const inCollection = await getFragrancesByCollection("karnain-addicte");
-    expect(inCollection.length).toBe(7);
+    expect(inCollection.length).toBe(6);
   });
 });

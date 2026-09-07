@@ -17,7 +17,7 @@ describe("getStudioProductImage", () => {
     ]);
   });
 
-  it("leaves unapproved fragrances on their catalog imagery", () => {
-    expect(getStudioProductImage("rose-des-bois")).toBeUndefined();
+  it("leaves fragrances without an approved treatment on their catalog imagery", () => {
+    expect(getStudioProductImage("nouvelle-fragrance")).toBeUndefined();
   });
 });
