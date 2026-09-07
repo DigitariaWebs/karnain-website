@@ -5,7 +5,9 @@ import { buttonVariants } from "@/components/ui/button";
 import { ClearBag } from "@/features/cart";
 import { cn } from "@/lib/utils";
 
-export const metadata: Metadata = { title: "Merci · Karnain" };
+// The root layout applies a `%s · Karnain` template, so the brand belongs there, not here —
+// spelling it out again rendered “Merci · Karnain · Karnain”.
+export const metadata: Metadata = { title: "Merci" };
 
 export default function OrderThankYouPage() {
   return (
