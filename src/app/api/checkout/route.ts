@@ -69,6 +69,12 @@ export async function POST(request: Request) {
   const origin = checkoutReturnOrigin(request.url);
   const session = await getStripe(creds.secretKey).checkout.sessions.create({
     mode: "payment",
+    // Everyone pays in euros. Stripe's Adaptive Pricing otherwise converts the total into the
+    // buyer's local currency (an Algerian visitor was shown "DZD 31,322.04" for a 195 € bottle),
+    // which puts the maison's pricing at the mercy of a daily FX rate and costs conversion
+    // spread. Disabled per Session rather than on the account, because the same account still
+    // serves the live WooCommerce shop and must keep its own settings.
+    adaptive_pricing: { enabled: false },
     line_items: lines.map((line) => ({
       quantity: line.quantity,
       price_data: {
