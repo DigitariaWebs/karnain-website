@@ -54,12 +54,21 @@ sign-up) to create, edit, and delete fragrances. Visitors never see admin UI.
 - 2026-09-07: **Rose des Bois is now a draft here too** (issue #2), matching the old site —
   migration `20260907104500_draft_rose_des_bois.sql`. It stays visible and editable in the admin;
   only anon reads lose it.
-- 2026-09-07: ⚠️ **the Supabase project is paused.** `kjpwmhprxnltnpnmmwls.supabase.co` returns
-  NXDOMAIN (Supabase drops the API subdomain of a paused project), so `/admin` login cannot reach
-  GoTrue and every catalog read falls back to the in-code seed. The public site looks healthy
-  precisely because of the fallback-first design (ADR-0005) — the failure is silent. Restore the
-  project from the Supabase dashboard, then apply the pending migration. Free-tier projects pause
-  after ~7 days without activity, so this will recur unless the project is upgraded.
+- 2026-09-07: **the original Supabase project was abandoned and replaced.**
+  `kjpwmhprxnltnpnmmwls` paused (free-tier projects pause after ~7 days idle) and Supabase drops
+  the API subdomain of a paused project, so it went to NXDOMAIN: `/admin` login could not reach
+  GoTrue and every catalog read fell back to the in-code seed. The public site looked healthy
+  throughout — that is the fallback-first design (ADR-0005) working, and it is why the outage was
+  silent. **Watch for that:** a silent fallback means the admin can be dead for days without a
+  visible symptom.
+- 2026-09-07: **now on project `woiyirrztyefnkdrykgh`**, rebuilt from the repo migrations. The old
+  project's data was unrecoverable, so the catalog was replayed from `src/features/catalog/data.ts`
+  via `20260907120000_sync_catalog_with_seed.sql` — the init migration alone would have restored
+  the 2026-06-07 _placeholder_ copy, not the brand's real descriptions. Admin user
+  `admin@karnain.fr` recreated with the `admin` role claim (plus the `auth.identities` row current
+  GoTrue needs for password sign-in — users hand-inserted without it fail with “Invalid login
+  credentials”). Verified live: anon reads 6 published rows, admin reads 7 including the draft,
+  anon writes rejected with 42501, `app_settings` and `orders` unreadable by anon.
 
 ## Image upload (spec 010)
 
