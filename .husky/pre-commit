@@ -1,0 +1,5 @@
+# Runs the lint-staged config in package.json: prettier (+ eslint --fix on source) over staged
+# files. Without this file the config was dead weight — husky was installed and `prepare` ran, but
+# no hook existed, so unformatted commits reached main and `pnpm verify` failed there three times
+# in two days on generated daily reports alone.
+pnpm lint-staged
