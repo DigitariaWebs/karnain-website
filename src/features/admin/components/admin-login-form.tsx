@@ -6,13 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { createSupabaseBrowserClient } from "@/core/supabase/client";
 
-export function AdminLoginForm() {
+export function AdminLoginForm({ initialStep = "password" }: { initialStep?: "password" | "mfa" }) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
-  const [step, setStep] = useState<"password" | "mfa">("password");
+  const [step, setStep] = useState<"password" | "mfa">(initialStep);
   const [code, setCode] = useState("");
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
