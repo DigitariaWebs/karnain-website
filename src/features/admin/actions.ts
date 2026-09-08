@@ -6,6 +6,7 @@ import { z } from "zod";
 import { saveAppSettings } from "@/core/settings/server";
 import { isSupabaseConfigured } from "@/core/supabase/config";
 import { createSupabaseServerClient } from "@/core/supabase/server";
+import { getAdminClient } from "./auth";
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
 
@@ -30,13 +31,15 @@ const fragranceInput = z.object({
   isBestSeller: z.boolean().default(false),
 });
 
-/** Returns an authed Supabase client, or null when unconfigured / not signed in. */
+/**
+ * Returns a Supabase client for a fully authenticated admin, or null.
+ *
+ * Delegates to `getAdminClient` so writes are held to the same bar as the screens: RLS keys on the
+ * `role` claim, which a password-only session already carries, so checking merely for a user here
+ * would let a second factor guard the UI while leaving every mutation open.
+ */
 async function authedClient() {
-  if (!isSupabaseConfigured()) return null;
-  const supabase = await createSupabaseServerClient();
-  const { data } = await supabase.auth.getUser();
-  if (!data.user) return null;
-  return supabase;
+  return getAdminClient();
 }
 
 const toList = (value: string) =>
@@ -142,9 +145,12 @@ export async function saveSettings(
   _prev: ActionResult | null,
   formData: FormData,
 ): Promise<ActionResult> {
-  // Verify the caller is an admin (role claim) before writing via the service role.
+  // These are the Stripe credentials, so the bar is the full one: signed in, MFA satisfied, and
+  // carrying the admin role claim — checked again here because the service-role write below
+  // bypasses RLS entirely and this action is the only thing standing in front of it.
   if (!isSupabaseConfigured()) return { ok: false, error: "Supabase non configuré." };
-  const supabase = await createSupabaseServerClient();
+  const supabase = await getAdminClient();
+  if (!supabase) return { ok: false, error: "Non autorisé." };
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -165,6 +171,7 @@ export async function saveSettings(
   return { ok: true };
 }
 
+/** Deliberately not behind `getAdminClient`: signing out must work from an aal1 session too. */
 export async function signOutAdmin(): Promise<void> {
   if (isSupabaseConfigured()) {
     const supabase = await createSupabaseServerClient();

@@ -1,15 +1,13 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { Container } from "@/components/layout/container";
 import { buttonVariants } from "@/components/ui/button";
-import { AdminNotConfigured, ProductTable, SignOutButton, getAdminUser } from "@/features/admin";
+import { AdminNotConfigured, ProductTable, SignOutButton, guardAdminPage } from "@/features/admin";
 import { getFragrancesForAdmin } from "@/features/catalog";
 import { cn } from "@/lib/utils";
 
 export default async function AdminDashboardPage() {
-  const session = await getAdminUser();
-  if (!session.configured) return <AdminNotConfigured />;
-  if (!session.user) redirect("/admin/login");
+  const guard = await guardAdminPage();
+  if (!guard.configured) return <AdminNotConfigured />;
 
   const fragrances = await getFragrancesForAdmin();
 
@@ -26,6 +24,12 @@ export default async function AdminDashboardPage() {
             className={cn(buttonVariants({ variant: "outline" }), "label-eyebrow")}
           >
             Commandes
+          </Link>
+          <Link
+            href="/admin/securite"
+            className={cn(buttonVariants({ variant: "outline" }), "label-eyebrow")}
+          >
+            Sécurité
           </Link>
           <Link
             href="/admin/parametres"

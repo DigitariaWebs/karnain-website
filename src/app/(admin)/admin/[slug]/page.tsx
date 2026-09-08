@@ -1,12 +1,11 @@
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { Container } from "@/components/layout/container";
-import { AdminNotConfigured, ProductForm, getAdminUser } from "@/features/admin";
+import { AdminNotConfigured, ProductForm, guardAdminPage } from "@/features/admin";
 import { getFragranceForAdmin } from "@/features/catalog";
 
 export default async function EditFragrancePage({ params }: { params: Promise<{ slug: string }> }) {
-  const session = await getAdminUser();
-  if (!session.configured) return <AdminNotConfigured />;
-  if (!session.user) redirect("/admin/login");
+  const guard = await guardAdminPage();
+  if (!guard.configured) return <AdminNotConfigured />;
 
   const { slug } = await params;
   const fragrance = await getFragranceForAdmin(slug);

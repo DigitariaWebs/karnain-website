@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { Container } from "@/components/layout/container";
-import { AdminNotConfigured, OrderStatusForm, getAdminUser, getOrder } from "@/features/admin";
+import { AdminNotConfigured, OrderStatusForm, guardAdminPage, getOrder } from "@/features/admin";
 import { formatEur } from "@/lib/format";
 
 export default async function AdminOrderDetailPage({
@@ -9,9 +9,8 @@ export default async function AdminOrderDetailPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const session = await getAdminUser();
-  if (!session.configured) return <AdminNotConfigured />;
-  if (!session.user) redirect("/admin/login");
+  const guard = await guardAdminPage();
+  if (!guard.configured) return <AdminNotConfigured />;
 
   const { id } = await params;
   const order = await getOrder(id);

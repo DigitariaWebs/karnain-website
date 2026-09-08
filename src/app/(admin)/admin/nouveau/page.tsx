@@ -1,11 +1,9 @@
-import { redirect } from "next/navigation";
 import { Container } from "@/components/layout/container";
-import { AdminNotConfigured, ProductForm, getAdminUser } from "@/features/admin";
+import { AdminNotConfigured, ProductForm, guardAdminPage } from "@/features/admin";
 
 export default async function NewFragrancePage() {
-  const session = await getAdminUser();
-  if (!session.configured) return <AdminNotConfigured />;
-  if (!session.user) redirect("/admin/login");
+  const guard = await guardAdminPage();
+  if (!guard.configured) return <AdminNotConfigured />;
 
   return (
     <Container className="py-12">

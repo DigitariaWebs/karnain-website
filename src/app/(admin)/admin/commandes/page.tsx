@@ -1,20 +1,18 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { Container } from "@/components/layout/container";
 import { buttonVariants } from "@/components/ui/button";
 import {
   AdminNotConfigured,
   OrderTable,
   SignOutButton,
-  getAdminUser,
+  guardAdminPage,
   getOrders,
 } from "@/features/admin";
 import { cn } from "@/lib/utils";
 
 export default async function AdminOrdersPage() {
-  const session = await getAdminUser();
-  if (!session.configured) return <AdminNotConfigured />;
-  if (!session.user) redirect("/admin/login");
+  const guard = await guardAdminPage();
+  if (!guard.configured) return <AdminNotConfigured />;
 
   const orders = await getOrders();
 

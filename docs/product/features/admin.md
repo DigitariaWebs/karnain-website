@@ -70,6 +70,32 @@ sign-up) to create, edit, and delete fragrances. Visitors never see admin UI.
   credentials”). Verified live: anon reads 6 published rows, admin reads 7 including the draft,
   anon writes rejected with 42501, `app_settings` and `orders` unreadable by anon.
 
+## Account security (2026-09-08)
+
+- **`/admin/securite`** holds both controls: change password, and enrol/remove a TOTP second
+  factor. Linked from the dashboard and from Paramètres.
+- **Password change re-checks the current password** before applying, which Supabase does not
+  require. Without it, anyone reaching an unlocked laptop with a live session could lock the owner
+  out of their own shop in two clicks.
+- **Second factor is TOTP (authenticator app).** Supabase Auth offers TOTP and phone only — there
+  is **no WebAuthn/passkey factor**, confirmed against the docs, so passkeys are not available
+  here however desirable. TOTP is the better of the two on offer: offline, free per sign-in, and
+  immune to SIM swap.
+- **Enforcement is the part that matters.** A verified factor leaves a password-only session at
+  `aal1`; `getAdminUser` reports that as `mfaRequired` and **`guardAdminPage` treats it exactly
+  like signed out**. Every admin page now goes through that one guard rather than repeating its
+  own check — six copies of a two-line check is how a new screen forgets the third condition.
+- **Server actions are held to the same bar** via `getAdminClient`. RLS keys on the `role` claim,
+  which an `aal1` session already carries, so checking only for a user would have left MFA
+  guarding the screens while every write stayed open. `signOutAdmin` is deliberately exempt —
+  you must be able to leave a half-authenticated session.
+- Resolving the assurance level **fails closed**: any error is treated as “MFA required”.
+- Gotcha: Supabase refuses a second enrolment while an unverified factor is outstanding, so the
+  form clears stale attempts before starting a new one — otherwise an abandoned enrolment wedges
+  the screen permanently.
+- **Recovery:** losing the authenticator means the factor must be deleted from the Supabase
+  dashboard (Authentication → Users → the user). There is no self-service reset.
+
 ## Image upload (spec 010)
 
 - Photos upload to a public Supabase Storage bucket **`product-images`**; RLS allows public read
