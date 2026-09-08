@@ -96,6 +96,67 @@ sign-up) to create, edit, and delete fragrances. Visitors never see admin UI.
 - **Recovery:** losing the authenticator means the factor must be deleted from the Supabase
   dashboard (Authentication → Users → the user). There is no self-service reset.
 
+## Who has access, and how to get back in
+
+Two admin accounts, deliberately separate — the developer must never sign in as the client, or
+losing one authenticator locks out both, and nothing in the audit trail says who changed what.
+
+| Account                    | For              | Notes                                           |
+| -------------------------- | ---------------- | ----------------------------------------------- |
+| `admin@karnain.fr`         | the client/owner | hand over with its own password and its own 2FA |
+| `achrefarabi414@gmail.com` | the developer    | created 2026-09-08, `admin` role claim          |
+
+**Both are ordinary admins.** Neither can reset the other's password or remove the other's second
+factor from inside the app — by design, since that would make 2FA a formality. Recovery happens
+one level down, in Supabase.
+
+### Break-glass (Supabase dashboard → project `woiyirrztyefnkdrykgh`)
+
+Whoever holds the Supabase project holds the real keys. That is the developer, and it is the
+recovery path for both accounts:
+
+- **Lost password** — Authentication → Users → the user → _Reset password_.
+- **Lost authenticator** — Authentication → Users → the user → remove the MFA factor. Access
+  returns to password-only; enrol again from `/admin/securite`.
+- **Locked out entirely** — the SQL below adds a fresh admin; `getAdminUser` only ever checks the
+  `role` claim, so a new user with it is immediately an admin.
+
+### Adding an admin by SQL
+
+Two GoTrue traps make the obvious insert fail, both learned the hard way:
+
+1. token columns must be `''`, never `NULL`, or sign-in dies with “Database error querying schema”;
+2. a matching **`auth.identities`** row is required, or the password is simply never accepted.
+
+```sql
+with created as (
+  insert into auth.users (
+    instance_id, id, aud, role, email, encrypted_password,
+    email_confirmed_at, created_at, updated_at,
+    raw_app_meta_data, raw_user_meta_data,
+    confirmation_token, recovery_token, email_change_token_new, email_change_token_current,
+    email_change, phone_change, phone_change_token, reauthentication_token,
+    is_super_admin, is_sso_user, is_anonymous
+  ) values (
+    '00000000-0000-0000-0000-000000000000', gen_random_uuid(), 'authenticated', 'authenticated',
+    'someone@example.com',
+    extensions.crypt('<password>', extensions.gen_salt('bf')),
+    now(), now(), now(),
+    '{"provider":"email","providers":["email"],"role":"admin"}'::jsonb, '{}'::jsonb,
+    '', '', '', '', '', '', '', '', false, false, false
+  ) returning id, email
+)
+insert into auth.identities (id, provider_id, user_id, identity_data, provider, created_at, updated_at)
+select gen_random_uuid(), c.id::text, c.id,
+       jsonb_build_object('sub', c.id::text, 'email', c.email, 'email_verified', true,
+                          'phone_verified', false),
+       'email', now(), now()
+from created c;
+```
+
+Revoking is `delete from auth.users where email = '…'`, or dropping the `role` claim from
+`raw_app_meta_data` to leave the account able to sign in but see nothing.
+
 ## Image upload (spec 010)
 
 - Photos upload to a public Supabase Storage bucket **`product-images`**; RLS allows public read
