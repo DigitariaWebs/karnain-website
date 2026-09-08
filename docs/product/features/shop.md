@@ -92,6 +92,14 @@ WhatsApp, no customer login.
 - 2026-09-07: **Adaptive Pricing is disabled per Session** (`adaptive_pricing.enabled: false`).
   It was quoting a 195 € bottle as "DZD 31,322.04" to a visitor in Algeria. Set in code rather
   than on the Stripe account, because that account also serves the live WooCommerce shop.
+- 2026-09-08: **`fragrances.images` is the only source of product imagery.** The studio
+  photographs used to be applied by a code override (`getStudioProductImage`) that swapped them in
+  at render time while the column still held the earlier renders — so the site showed one picture
+  and the admin's edit form showed another, and no edit in the back office could reconcile them
+  because the override always won. The paths now live in the column
+  (`20260908150000_catalog_images_to_studio.sql`, seed updated to match) and the override module,
+  its export and its tests are deleted. What an admin sees is what visitors see, and uploading a
+  replacement actually replaces it.
 - 2026-09-08: **`/commande/merci` verifies the `session_id`.** It used to thank anyone who opened
   the URL and empty their bag while doing it. It now honours the id only when it matches an order
   this site created, then asks Stripe for the authoritative `payment_status` — reading our own

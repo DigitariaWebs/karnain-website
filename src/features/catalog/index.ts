@@ -15,4 +15,3 @@ export { FragranceCard } from "./components/fragrance-card";
 export { FragranceGrid } from "./components/fragrance-grid";
 export { FragranceGallery, type GalleryImage } from "./components/fragrance-gallery";
 export { ScentNotes } from "./components/scent-notes";
-export { getStudioProductImage } from "./product-imagery";

@@ -14,7 +14,6 @@ import {
   getCollection,
   getFragrance,
   getFragrances,
-  getStudioProductImage,
 } from "@/features/catalog";
 import { formatEur } from "@/lib/format";
 
@@ -48,12 +47,8 @@ export default async function FragrancePage({ params }: { params: Promise<Params
     getFragrances(),
   ]);
   const others = all.filter((item) => item.slug !== fragrance.slug).slice(0, 4);
-  const studioProductImage = getStudioProductImage(fragrance.slug);
-  const productImages = studioProductImage
-    ? [studioProductImage, ...fragrance.images.slice(1)]
-    : fragrance.images;
-  const images: GalleryImage[] = productImages.length
-    ? productImages.map((src, index) => ({
+  const images: GalleryImage[] = fragrance.images.length
+    ? fragrance.images.map((src, index) => ({
         src,
         alt: `${fragrance.name} — visuel ${index + 1}`,
       }))

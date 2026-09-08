@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { getDictionary } from "@/core/i18n";
 import { formatEur } from "@/lib/format";
-import { getStudioProductImage } from "../product-imagery";
 import type { Fragrance } from "../types";
 
 type FragranceCardProps = {
@@ -13,7 +12,7 @@ type FragranceCardProps = {
 /** Fragrance card, linked to its product page. Falls back to a tonal placeholder when a
  * fragrance has no imagery yet. */
 export function FragranceCard({ fragrance, comingSoonLabel }: FragranceCardProps) {
-  const image = getStudioProductImage(fragrance.slug) ?? fragrance.images[0];
+  const image = fragrance.images[0];
   const badges = getDictionary().badges;
   const badge = fragrance.isBestSeller ? badges.bestSeller : fragrance.isNew ? badges.new : null;
   return (
