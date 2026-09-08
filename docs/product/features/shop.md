@@ -92,6 +92,14 @@ WhatsApp, no customer login.
 - 2026-09-07: **Adaptive Pricing is disabled per Session** (`adaptive_pricing.enabled: false`).
   It was quoting a 195 € bottle as "DZD 31,322.04" to a visitor in Algeria. Set in code rather
   than on the Stripe account, because that account also serves the live WooCommerce shop.
+- 2026-09-08: **`/commande/merci` verifies the `session_id`.** It used to thank anyone who opened
+  the URL and empty their bag while doing it. It now honours the id only when it matches an order
+  this site created, then asks Stripe for the authoritative `payment_status` — reading our own
+  `orders.status` would race the webhook, since a card buyer lands on the page a moment before the
+  `completed` event arrives. Four outcomes (`confirmed` / `processing` / `failed` / `unknown`);
+  a delayed method in flight says “en cours de validation”, never “paiement reçu”, and a failed
+  payment leaves the bag intact so the buyer can retry. The mapping lives in `core/stripe/outcome`
+  (no `server-only`, so it is unit-tested) and fails closed on anything unrecognised.
 
 ## CUJs covered
 

@@ -145,6 +145,37 @@ export const fr = {
     checkoutSoon: "Le paiement en ligne arrive bientôt.",
   },
 
+  orderConfirmation: {
+    confirmed: {
+      eyebrow: "Commande confirmée",
+      title: "Merci pour votre commande",
+      body: "Votre paiement a bien été reçu. Un e-mail de confirmation vous parviendra sous peu.",
+      cta: "Continuer mes achats",
+      href: "/collection",
+    },
+    processing: {
+      eyebrow: "Commande enregistrée",
+      title: "Merci pour votre commande",
+      body: "Votre paiement est en cours de validation. Vous recevrez un e-mail dès qu’il sera confirmé.",
+      cta: "Continuer mes achats",
+      href: "/collection",
+    },
+    failed: {
+      eyebrow: "Paiement non finalisé",
+      title: "Votre commande n’a pas abouti",
+      body: "Aucun montant n’a été débité. Votre panier vous attend si vous souhaitez réessayer.",
+      cta: "Retour au panier",
+      href: "/panier",
+    },
+    unknown: {
+      eyebrow: "Commande",
+      title: "Commande introuvable",
+      body: "Nous ne trouvons pas cette commande. Si vous venez de régler, l’e-mail de confirmation fait foi.",
+      cta: "Découvrir la collection",
+      href: "/collection",
+    },
+  },
+
   product: {
     backToCollection: "Retour à la collection",
     notesTitle: "Les notes",
